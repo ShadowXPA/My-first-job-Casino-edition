@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cl2nm2chxlnaa"]
+
+[ext_resource type="PackedScene" uid="uid://bs4ywh4n5wkaq" path="res://levels/casino/casino.tscn" id="1_uwrxv"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Casino" parent="." instance=ExtResource("1_uwrxv")]

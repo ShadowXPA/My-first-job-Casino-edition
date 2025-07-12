@@ -13,8 +13,9 @@ config_version=5
 config/name="Project GJ"
 config/description="Game for the Shovel Jam 2025 Game Jam"
 config/version="1.0.0-demo"
+run/main_scene="uid://cl2nm2chxlnaa"
 config/use_custom_user_dir=true
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]

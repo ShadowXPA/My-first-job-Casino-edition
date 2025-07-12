@@ -1,0 +1,351 @@
+[gd_scene load_steps=2 format=3 uid="uid://bs4ywh4n5wkaq"]
+
+[ext_resource type="PackedScene" uid="uid://bajyvxl58rfej" path="res://props/floor/floor.tscn" id="1_06gix"]
+
+[node name="Casino" type="Node2D"]
+
+[node name="Floors" type="Node" parent="."]
+
+[node name="Row8" type="Node" parent="Floors"]
+
+[node name="Floor2" parent="Floors/Row8" instance=ExtResource("1_06gix")]
+position = Vector2(1616, 320)
+
+[node name="Floor3" parent="Floors/Row8" instance=ExtResource("1_06gix")]
+position = Vector2(1488, 384)
+Orientation = 1
+
+[node name="Floor4" parent="Floors/Row8" instance=ExtResource("1_06gix")]
+position = Vector2(1360, 448)
+Orientation = 3
+
+[node name="Floor5" parent="Floors/Row8" instance=ExtResource("1_06gix")]
+position = Vector2(1232, 512)
+Orientation = 1
+
+[node name="Floor6" parent="Floors/Row8" instance=ExtResource("1_06gix")]
+position = Vector2(1104, 576)
+Orientation = 1
+
+[node name="Floor7" parent="Floors/Row8" instance=ExtResource("1_06gix")]
+position = Vector2(976, 640)
+Orientation = 2
+
+[node name="Floor" parent="Floors/Row8" instance=ExtResource("1_06gix")]
+position = Vector2(848, 704)
+Orientation = 1
+
+[node name="Floor8" parent="Floors/Row8" instance=ExtResource("1_06gix")]
+position = Vector2(720, 768)
+Orientation = 1
+
+[node name="Floor9" parent="Floors/Row8" instance=ExtResource("1_06gix")]
+position = Vector2(592, 832)
+Orientation = 3
+
+[node name="Floor10" parent="Floors/Row8" instance=ExtResource("1_06gix")]
+position = Vector2(464, 896)
+Orientation = 1
+
+[node name="Row6" type="Node" parent="Floors"]
+
+[node name="Floor2" parent="Floors/Row6" instance=ExtResource("1_06gix")]
+position = Vector2(1744, 384)
+
+[node name="Floor3" parent="Floors/Row6" instance=ExtResource("1_06gix")]
+position = Vector2(1616, 448)
+Orientation = 3
+
+[node name="Floor4" parent="Floors/Row6" instance=ExtResource("1_06gix")]
+position = Vector2(1488, 512)
+Orientation = 1
+
+[node name="Floor5" parent="Floors/Row6" instance=ExtResource("1_06gix")]
+position = Vector2(1360, 576)
+Orientation = 1
+
+[node name="Floor6" parent="Floors/Row6" instance=ExtResource("1_06gix")]
+position = Vector2(1232, 640)
+Orientation = 1
+
+[node name="Floor7" parent="Floors/Row6" instance=ExtResource("1_06gix")]
+position = Vector2(1104, 704)
+Orientation = 3
+
+[node name="Floor" parent="Floors/Row6" instance=ExtResource("1_06gix")]
+position = Vector2(976, 768)
+Orientation = 1
+
+[node name="Floor8" parent="Floors/Row6" instance=ExtResource("1_06gix")]
+position = Vector2(848, 832)
+Orientation = 3
+
+[node name="Floor9" parent="Floors/Row6" instance=ExtResource("1_06gix")]
+position = Vector2(720, 896)
+Orientation = 3
+
+[node name="Floor10" parent="Floors/Row6" instance=ExtResource("1_06gix")]
+position = Vector2(592, 960)
+
+[node name="Row7" type="Node" parent="Floors"]
+
+[node name="Floor2" parent="Floors/Row7" instance=ExtResource("1_06gix")]
+position = Vector2(1872, 448)
+Orientation = 2
+
+[node name="Floor3" parent="Floors/Row7" instance=ExtResource("1_06gix")]
+position = Vector2(1744, 512)
+Orientation = 2
+
+[node name="Floor4" parent="Floors/Row7" instance=ExtResource("1_06gix")]
+position = Vector2(1616, 576)
+Orientation = 1
+
+[node name="Floor5" parent="Floors/Row7" instance=ExtResource("1_06gix")]
+position = Vector2(1488, 640)
+Orientation = 1
+
+[node name="Floor6" parent="Floors/Row7" instance=ExtResource("1_06gix")]
+position = Vector2(1360, 704)
+Orientation = 2
+
+[node name="Floor7" parent="Floors/Row7" instance=ExtResource("1_06gix")]
+position = Vector2(1232, 768)
+Orientation = 3
+
+[node name="Floor" parent="Floors/Row7" instance=ExtResource("1_06gix")]
+position = Vector2(1104, 832)
+Orientation = 1
+
+[node name="Floor8" parent="Floors/Row7" instance=ExtResource("1_06gix")]
+position = Vector2(976, 896)
+
+[node name="Floor9" parent="Floors/Row7" instance=ExtResource("1_06gix")]
+position = Vector2(848, 960)
+
+[node name="Floor10" parent="Floors/Row7" instance=ExtResource("1_06gix")]
+position = Vector2(720, 1024)
+Orientation = 2
+
+[node name="Row5" type="Node" parent="Floors"]
+
+[node name="Floor2" parent="Floors/Row5" instance=ExtResource("1_06gix")]
+position = Vector2(2000, 512)
+
+[node name="Floor3" parent="Floors/Row5" instance=ExtResource("1_06gix")]
+position = Vector2(1872, 576)
+Orientation = 1
+
+[node name="Floor4" parent="Floors/Row5" instance=ExtResource("1_06gix")]
+position = Vector2(1744, 640)
+Orientation = 3
+
+[node name="Floor5" parent="Floors/Row5" instance=ExtResource("1_06gix")]
+position = Vector2(1616, 704)
+Orientation = 1
+
+[node name="Floor6" parent="Floors/Row5" instance=ExtResource("1_06gix")]
+position = Vector2(1488, 768)
+Orientation = 1
+
+[node name="Floor7" parent="Floors/Row5" instance=ExtResource("1_06gix")]
+position = Vector2(1360, 832)
+Orientation = 2
+
+[node name="Floor" parent="Floors/Row5" instance=ExtResource("1_06gix")]
+position = Vector2(1232, 896)
+Orientation = 1
+
+[node name="Floor8" parent="Floors/Row5" instance=ExtResource("1_06gix")]
+position = Vector2(1104, 960)
+Orientation = 1
+
+[node name="Floor9" parent="Floors/Row5" instance=ExtResource("1_06gix")]
+position = Vector2(976, 1024)
+Orientation = 3
+
+[node name="Floor10" parent="Floors/Row5" instance=ExtResource("1_06gix")]
+position = Vector2(848, 1088)
+Orientation = 1
+
+[node name="Row3" type="Node" parent="Floors"]
+
+[node name="Floor2" parent="Floors/Row3" instance=ExtResource("1_06gix")]
+position = Vector2(2128, 576)
+Orientation = 2
+
+[node name="Floor3" parent="Floors/Row3" instance=ExtResource("1_06gix")]
+position = Vector2(2000, 640)
+Orientation = 2
+
+[node name="Floor4" parent="Floors/Row3" instance=ExtResource("1_06gix")]
+position = Vector2(1872, 704)
+
+[node name="Floor5" parent="Floors/Row3" instance=ExtResource("1_06gix")]
+position = Vector2(1744, 768)
+Orientation = 1
+
+[node name="Floor6" parent="Floors/Row3" instance=ExtResource("1_06gix")]
+position = Vector2(1616, 832)
+Orientation = 1
+
+[node name="Floor7" parent="Floors/Row3" instance=ExtResource("1_06gix")]
+position = Vector2(1488, 896)
+
+[node name="Floor" parent="Floors/Row3" instance=ExtResource("1_06gix")]
+position = Vector2(1360, 960)
+Orientation = 1
+
+[node name="Floor8" parent="Floors/Row3" instance=ExtResource("1_06gix")]
+position = Vector2(1232, 1024)
+
+[node name="Floor9" parent="Floors/Row3" instance=ExtResource("1_06gix")]
+position = Vector2(1104, 1088)
+Orientation = 3
+
+[node name="Floor10" parent="Floors/Row3" instance=ExtResource("1_06gix")]
+position = Vector2(976, 1152)
+Orientation = 2
+
+[node name="Row4" type="Node" parent="Floors"]
+
+[node name="Floor2" parent="Floors/Row4" instance=ExtResource("1_06gix")]
+position = Vector2(2256, 640)
+Type = 1
+
+[node name="Floor3" parent="Floors/Row4" instance=ExtResource("1_06gix")]
+position = Vector2(2128, 704)
+Type = 1
+
+[node name="Floor4" parent="Floors/Row4" instance=ExtResource("1_06gix")]
+position = Vector2(2000, 768)
+Type = 1
+Orientation = 1
+
+[node name="Floor5" parent="Floors/Row4" instance=ExtResource("1_06gix")]
+position = Vector2(1872, 832)
+Type = 1
+Orientation = 3
+
+[node name="Floor6" parent="Floors/Row4" instance=ExtResource("1_06gix")]
+position = Vector2(1744, 896)
+Type = 1
+
+[node name="Floor7" parent="Floors/Row4" instance=ExtResource("1_06gix")]
+position = Vector2(1616, 960)
+Type = 1
+Orientation = 2
+
+[node name="Floor" parent="Floors/Row4" instance=ExtResource("1_06gix")]
+position = Vector2(1488, 1024)
+Type = 1
+
+[node name="Floor8" parent="Floors/Row4" instance=ExtResource("1_06gix")]
+position = Vector2(1360, 1088)
+Type = 1
+
+[node name="Floor9" parent="Floors/Row4" instance=ExtResource("1_06gix")]
+position = Vector2(1232, 1152)
+Type = 1
+Orientation = 1
+
+[node name="Floor10" parent="Floors/Row4" instance=ExtResource("1_06gix")]
+position = Vector2(1104, 1216)
+Type = 1
+Orientation = 3
+
+[node name="Row" type="Node" parent="Floors"]
+
+[node name="Floor2" parent="Floors/Row" instance=ExtResource("1_06gix")]
+position = Vector2(2384, 704)
+Type = 1
+Orientation = 2
+
+[node name="Floor3" parent="Floors/Row" instance=ExtResource("1_06gix")]
+position = Vector2(2256, 768)
+Type = 1
+Orientation = 2
+
+[node name="Floor4" parent="Floors/Row" instance=ExtResource("1_06gix")]
+position = Vector2(2128, 832)
+Type = 1
+
+[node name="Floor5" parent="Floors/Row" instance=ExtResource("1_06gix")]
+position = Vector2(2000, 896)
+Type = 1
+Orientation = 1
+
+[node name="Floor6" parent="Floors/Row" instance=ExtResource("1_06gix")]
+position = Vector2(1872, 960)
+Type = 1
+Orientation = 1
+
+[node name="Floor7" parent="Floors/Row" instance=ExtResource("1_06gix")]
+position = Vector2(1744, 1024)
+Type = 1
+
+[node name="Floor" parent="Floors/Row" instance=ExtResource("1_06gix")]
+position = Vector2(1616, 1088)
+Type = 1
+Orientation = 1
+
+[node name="Floor8" parent="Floors/Row" instance=ExtResource("1_06gix")]
+position = Vector2(1488, 1152)
+Type = 1
+
+[node name="Floor9" parent="Floors/Row" instance=ExtResource("1_06gix")]
+position = Vector2(1360, 1216)
+Type = 1
+Orientation = 3
+
+[node name="Floor10" parent="Floors/Row" instance=ExtResource("1_06gix")]
+position = Vector2(1232, 1280)
+Type = 1
+Orientation = 2
+
+[node name="Row2" type="Node" parent="Floors"]
+
+[node name="Floor2" parent="Floors/Row2" instance=ExtResource("1_06gix")]
+position = Vector2(2512, 768)
+Type = 1
+
+[node name="Floor3" parent="Floors/Row2" instance=ExtResource("1_06gix")]
+position = Vector2(2384, 832)
+Type = 1
+
+[node name="Floor4" parent="Floors/Row2" instance=ExtResource("1_06gix")]
+position = Vector2(2256, 896)
+Type = 1
+Orientation = 1
+
+[node name="Floor5" parent="Floors/Row2" instance=ExtResource("1_06gix")]
+position = Vector2(2128, 960)
+Type = 1
+Orientation = 3
+
+[node name="Floor6" parent="Floors/Row2" instance=ExtResource("1_06gix")]
+position = Vector2(2000, 1024)
+Type = 1
+
+[node name="Floor7" parent="Floors/Row2" instance=ExtResource("1_06gix")]
+position = Vector2(1872, 1088)
+Type = 1
+Orientation = 2
+
+[node name="Floor" parent="Floors/Row2" instance=ExtResource("1_06gix")]
+position = Vector2(1744, 1152)
+Type = 1
+
+[node name="Floor8" parent="Floors/Row2" instance=ExtResource("1_06gix")]
+position = Vector2(1616, 1216)
+Type = 1
+
+[node name="Floor9" parent="Floors/Row2" instance=ExtResource("1_06gix")]
+position = Vector2(1488, 1280)
+Type = 1
+Orientation = 1
+
+[node name="Floor10" parent="Floors/Row2" instance=ExtResource("1_06gix")]
+position = Vector2(1360, 1344)
+Type = 1
+Orientation = 3
