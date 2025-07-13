@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvh3gq7uu2epb"]
+
+[ext_resource type="Script" uid="uid://bobtla3pf2pg" path="res://components/interactable/PlayerInteractable.cs" id="1_3gdun"]
+
+[node name="PlayerInteractable" type="Area2D"]
+collision_mask = 2147483648
+script = ExtResource("1_3gdun")

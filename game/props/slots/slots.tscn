@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://bbdvu825g3gpy"]
+
+[ext_resource type="Script" uid="uid://b8wep0bi3obck" path="res://props/slots/Slots.cs" id="1_ienl1"]
+[ext_resource type="Texture2D" uid="uid://butoegopmfvkj" path="res://icon.svg" id="1_swsnf"]
+[ext_resource type="PackedScene" uid="uid://dvh3gq7uu2epb" path="res://components/interactable/player_interactable.tscn" id="3_nafwu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nafwu"]
+size = Vector2(64, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_swsnf"]
+radius = 64.0
+
+[node name="Slots" type="StaticBody2D"]
+script = ExtResource("1_ienl1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -56)
+rotation = -0.436332
+scale = Vector2(0.5, 1)
+skew = 0.436332
+texture = ExtResource("1_swsnf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+rotation = -0.436332
+skew = 0.436332
+shape = SubResource("RectangleShape2D_nafwu")
+
+[node name="PlayerInteractable" parent="." instance=ExtResource("3_nafwu")]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerInteractable"]
+shape = SubResource("CircleShape2D_swsnf")
+debug_color = Color(0.937255, 0, 0.937255, 0.419608)

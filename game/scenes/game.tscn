@@ -1,7 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://cl2nm2chxlnaa"]
+[gd_scene load_steps=5 format=3 uid="uid://cl2nm2chxlnaa"]
 
+[ext_resource type="PackedScene" uid="uid://cegnb4ag1qcju" path="res://ui/hud/hud.tscn" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bs4ywh4n5wkaq" path="res://levels/casino/casino.tscn" id="1_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://fpma3i63j8us" path="res://characters/player/player.tscn" id="2_yqjtg"]
+[ext_resource type="Script" uid="uid://bsptftcarl853" path="res://scenes/GameManager.cs" id="3_lnu2h"]
 
 [node name="Game" type="Node2D"]
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("1_lbhrr")]
+
 [node name="Casino" parent="." instance=ExtResource("1_uwrxv")]
+
+[node name="Player" parent="." instance=ExtResource("2_yqjtg")]
+y_sort_enabled = true
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("3_lnu2h")

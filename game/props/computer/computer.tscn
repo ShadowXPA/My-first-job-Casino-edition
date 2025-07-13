@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://qvsbb7i6vki0"]
+
+[ext_resource type="Script" uid="uid://d26cots41leit" path="res://props/computer/Computer.cs" id="1_gi5jw"]
+[ext_resource type="Texture2D" uid="uid://butoegopmfvkj" path="res://icon.svg" id="1_o2v5s"]
+[ext_resource type="PackedScene" uid="uid://dvh3gq7uu2epb" path="res://components/interactable/player_interactable.tscn" id="3_jbdti"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o2v5s"]
+size = Vector2(64, 64)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gi5jw"]
+radius = 100.0
+
+[node name="Computer" type="StaticBody2D"]
+script = ExtResource("1_gi5jw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 0.436332
+scale = Vector2(0.5, 0.5)
+skew = -0.436332
+texture = ExtResource("1_o2v5s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 0.436332
+skew = -0.436332
+shape = SubResource("RectangleShape2D_o2v5s")
+
+[node name="PlayerInteractable" parent="." instance=ExtResource("3_jbdti")]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerInteractable"]
+shape = SubResource("CircleShape2D_gi5jw")
+debug_color = Color(0.937255, 0, 0.937255, 0.419608)
