@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 [display]
 
 window/handheld/orientation=4
+mouse_cursor/custom_image="uid://bb8c3mfb5kvw"
 
 [dotnet]
 
@@ -28,6 +29,7 @@ project/assembly_name="ProjectGJ"
 
 [gui]
 
+theme/custom="uid://gv12lx78qjyc"
 theme/custom_font="uid://cqkl574ju354d"
 
 [input]

@@ -1,0 +1,83 @@
+[gd_scene load_steps=3 format=3 uid="uid://dyepy6o2m1wpr"]
+
+[ext_resource type="Script" uid="uid://shv47q3u2dl3" path="res://ui/menus/ShopMenu.cs" id="1_inuqy"]
+[ext_resource type="PackedScene" uid="uid://cl2g3p62kaj6i" path="res://ui/shop/shop_item.tscn" id="2_bpc1f"]
+
+[node name="ShopMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_inuqy")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+current_tab = 0
+use_hidden_tabs_for_min_size = true
+
+[node name="Buy" type="ScrollContainer" parent="TabContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 4
+vertical_scroll_mode = 0
+metadata/_tab_index = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Buy"]
+layout_mode = 2
+
+[node name="ShopItem" parent="TabContainer/Buy/HBoxContainer" instance=ExtResource("2_bpc1f")]
+layout_mode = 2
+
+[node name="ShopItem2" parent="TabContainer/Buy/HBoxContainer" instance=ExtResource("2_bpc1f")]
+layout_mode = 2
+
+[node name="ShopItem3" parent="TabContainer/Buy/HBoxContainer" instance=ExtResource("2_bpc1f")]
+layout_mode = 2
+
+[node name="ShopItem4" parent="TabContainer/Buy/HBoxContainer" instance=ExtResource("2_bpc1f")]
+layout_mode = 2
+
+[node name="ShopItem5" parent="TabContainer/Buy/HBoxContainer" instance=ExtResource("2_bpc1f")]
+layout_mode = 2
+
+[node name="ShopItem6" parent="TabContainer/Buy/HBoxContainer" instance=ExtResource("2_bpc1f")]
+layout_mode = 2
+
+[node name="ShopItem7" parent="TabContainer/Buy/HBoxContainer" instance=ExtResource("2_bpc1f")]
+layout_mode = 2
+
+[node name="ShopItem8" parent="TabContainer/Buy/HBoxContainer" instance=ExtResource("2_bpc1f")]
+layout_mode = 2
+
+[node name="ShopItem9" parent="TabContainer/Buy/HBoxContainer" instance=ExtResource("2_bpc1f")]
+layout_mode = 2
+
+[node name="ShopItem10" parent="TabContainer/Buy/HBoxContainer" instance=ExtResource("2_bpc1f")]
+layout_mode = 2
+
+[node name="ShopItem11" parent="TabContainer/Buy/HBoxContainer" instance=ExtResource("2_bpc1f")]
+layout_mode = 2
+
+[node name="Hire" type="PanelContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="dwao" type="Label" parent="TabContainer/Hire"]
+layout_mode = 2
+text = "diophjaw
+dpowak"
+
+[node name="Exit" type="Button" parent="TabContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Exit"
+metadata/_tab_index = 2

@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://cegnb4ag1qcju"]
+[gd_scene load_steps=2 format=3 uid="uid://cegnb4ag1qcju"]
 
-[ext_resource type="Theme" uid="uid://gv12lx78qjyc" path="res://themes/main_theme.res" id="1_4d6w6"]
 [ext_resource type="Script" uid="uid://yqb1sd1i13vt" path="res://ui/hud/Hud.cs" id="1_xmswo"]
 
 [node name="HUD" type="Control"]
@@ -11,7 +10,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-theme = ExtResource("1_4d6w6")
 script = ExtResource("1_xmswo")
 
 [node name="TopLeft" type="MarginContainer" parent="."]

@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://cl2g3p62kaj6i"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ymnn3"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.168627)
+
+[node name="ShopItem" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_ymnn3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Image" type="CenterContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 150)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Item Text"
+
+[node name="Price" type="Label" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Item Price"
+
+[node name="Buy" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Buy"
