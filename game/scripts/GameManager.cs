@@ -8,6 +8,12 @@ public partial class GameManager : Node
     public Hud? Hud;
     [Export]
     public Timer? GameTimer;
+    [Export]
+    public Player? Player;
+    [Export]
+    public Node? CustomerContainer;
+    [Export]
+    public Node? WorkerContainer;
 
     private GameData _gameData = new();
 
@@ -22,6 +28,10 @@ public partial class GameManager : Node
         }
 
         SignalBus.PlayerMoneyTransaction += OnPlayerMoneyTransaction;
+
+        if (Player is null) return;
+
+        Player.SetCharacter(_gameData.Character);
     }
 
     public override void _ExitTree()
@@ -37,7 +47,9 @@ public partial class GameManager : Node
     private void OnGameTimerTicked()
     {
         _gameData.ElapsedTime++;
+        // TODO: this should be a signal I guess, that way HUD can set time and day, Game manager or whoever can do checks based on time and day (if it's the 30th day etc...)
         Hud?.SetTimeAndDay(_gameData.ElapsedTime);
+        // TODO: remove this...
         Hud?.AddTransaction(GD.Randf() < .5 ? (int)-GD.Randi() : (int)GD.Randi());
     }
 

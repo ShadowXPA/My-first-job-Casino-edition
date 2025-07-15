@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bv5wyrvh7fafm"]
+
+[ext_resource type="SpriteFrames" uid="uid://blfdut4oddx3o" path="res://characters/character_10.res" id="1_nm2m1"]
+[ext_resource type="Script" uid="uid://b8b4kpfn6785e" path="res://characters/worker/Worker.cs" id="1_piga7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_01pos"]
+radius = 8.0
+
+[node name="Worker" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_piga7")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+sprite_frames = ExtResource("1_nm2m1")
+animation = &"idle_down"
+offset = Vector2(0, -12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_01pos")

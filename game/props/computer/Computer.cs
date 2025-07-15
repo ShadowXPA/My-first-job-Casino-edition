@@ -18,7 +18,11 @@ public partial class Computer : StaticBody2D
 		_playerInteractable.Actions.Add(viewStatsButton);
 
 		_playerInteractable.EnterAction += () => _animatedSprite.Play("on");
-		_playerInteractable.ExitAction += () => _animatedSprite.Play("off");
+		_playerInteractable.ExitAction += () =>
+		{
+			_animatedSprite.Play("off");
+			SignalBus.BroadcastShopButtonPressed(false);
+		};
 	}
 
 	private void OnShopPressed()

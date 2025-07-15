@@ -32,6 +32,13 @@ public partial class Player : CharacterBody2D
 		_lastDirection = direction;
 	}
 
+	public void SetCharacter(string resource)
+	{
+		if (_animatedSprite is null) return;
+
+		_animatedSprite.SpriteFrames = GD.Load<SpriteFrames>(resource);
+	}
+
 	private void PlayAnimation(Vector2 direction, float animationSpeed = 1.0f)
 	{
 		if (_animatedSprite is null) return;
@@ -71,35 +78,4 @@ public partial class Player : CharacterBody2D
 		_animatedSprite.SpeedScale = animationSpeed;
 		_animatedSprite.Play(str.ToString());
 	}
-
-	// private void Move(Vector2 direction)
-	// {
-	// 	GlobalPosition += direction * Utils.TILE_SIZE;
-
-	// 	if (direction == Vector2.Up)
-	// 	{
-	// 		_animatedSprite.Play("walk_up");
-	// 	}
-	// 	else if (direction == Vector2.Right)
-	// 	{
-	// 		_animatedSprite.Play("walk_right");
-	// 	}
-	// 	else if (direction == Vector2.Down)
-	// 	{
-	// 		_animatedSprite.Play("walk_down");
-	// 	}
-	// 	else if (direction == Vector2.Left)
-	// 	{
-	// 		_animatedSprite.Play("walk_left");
-	// 	}
-
-	// 	_lastDirection = direction;
-
-	// 	// _animatedSprite!.GlobalPosition -= direction * Utils.TILE_SIZE;
-
-	// 	// _nodePositionTween?.Kill();
-	// 	// _nodePositionTween = CreateTween();
-	// 	// _nodePositionTween.SetProcessMode(Tween.TweenProcessMode.Physics);
-	// 	// _nodePositionTween.TweenProperty(_animatedSprite, "global_position", GlobalPosition, 0.1).SetTrans(Tween.TransitionType.Sine);
-	// }
 }

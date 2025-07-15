@@ -63,7 +63,7 @@ size_flags_horizontal = 8
 [node name="Money" type="Label" parent="TopRight/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "$ Money"
+text = "$Money"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TopRight/VBoxContainer"]
 unique_name_in_owner = true

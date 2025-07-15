@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://b8o5olij02466"]
+
+[ext_resource type="Texture2D" uid="uid://dp3ddexxuesa" path="res://assets/sprites/casino/pedestal.png" id="1_8r0jh"]
+[ext_resource type="Script" uid="uid://5en4hncgfedp" path="res://props/statue/Statue.cs" id="1_e0kgh"]
+[ext_resource type="PackedScene" uid="uid://dvh3gq7uu2epb" path="res://components/interactable/player_interactable.tscn" id="2_8r0jh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6f2gb"]
+size = Vector2(84, 67)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e0kgh"]
+radius = 60.0
+
+[node name="Statue" type="StaticBody2D"]
+script = ExtResource("1_e0kgh")
+
+[node name="Pedestal" type="Sprite2D" parent="."]
+position = Vector2(8, 0)
+texture = ExtResource("1_8r0jh")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+z_index = 1
+position = Vector2(8, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(8, -4.5)
+shape = SubResource("RectangleShape2D_6f2gb")
+
+[node name="PlayerInteractable" parent="." instance=ExtResource("2_8r0jh")]
+unique_name_in_owner = true
+position = Vector2(8, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerInteractable"]
+shape = SubResource("CircleShape2D_e0kgh")
+debug_color = Color(1, 0.6, 0.701961, 0.419608)
