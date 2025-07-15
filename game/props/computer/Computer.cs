@@ -3,11 +3,12 @@ using System;
 
 public partial class Computer : StaticBody2D
 {
+	private AnimatedSprite2D? _animatedSprite;
 	private PlayerInteractable? _playerInteractable;
 
 	public override void _Ready()
 	{
-        ZIndex = (int)GlobalPosition.Y;
+		_animatedSprite = GetNode<AnimatedSprite2D>("%Sprite");
 		_playerInteractable = GetNode<PlayerInteractable>("%PlayerInteractable");
 
 		var shopButton = Utils.CreateActionButton("Shop", OnShopPressed);
@@ -15,6 +16,9 @@ public partial class Computer : StaticBody2D
 
 		_playerInteractable.Actions.Add(shopButton);
 		_playerInteractable.Actions.Add(viewStatsButton);
+
+		_playerInteractable.EnterAction += () => _animatedSprite.Play("on");
+		_playerInteractable.ExitAction += () => _animatedSprite.Play("off");
 	}
 
 	private void OnShopPressed()

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public partial class PlayerInteractable : Area2D
 {
     public readonly List<Button> Actions = [];
+    public Action? EnterAction;
+    public Action? ExitAction;
 
     public override void _Ready()
     {
@@ -22,11 +24,13 @@ public partial class PlayerInteractable : Area2D
 
     private void OnPlayerEntered(Node2D body)
     {
+        EnterAction?.Invoke();
         SignalBus.BroadcastPlayerInteracting(Actions);
     }
 
     private void OnPlayerExited(Node2D body)
     {
+        ExitAction?.Invoke();
 		SignalBus.BroadcastPlayerStoppedInteracting(Actions);
     }
 }
