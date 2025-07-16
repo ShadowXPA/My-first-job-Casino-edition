@@ -1,5 +1,9 @@
 using Godot;
+using ProjectGJ.Components.Interactable;
+using ProjectGJ.Scripts;
 using System;
+
+namespace ProjectGJ.Props.Slots;
 
 public partial class Slots : StaticBody2D
 {

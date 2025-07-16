@@ -1,68 +1,116 @@
 using System.Collections.Generic;
+using Godot;
+using ProjectGJ.Scripts.Items;
+
+namespace ProjectGJ.Scripts;
 
 public static class GameItems
 {
-    /**
-    * TODO: Available characters for:
-    *  - Player
-    *  - Customers
-    *  - Workers
-    *    - Security
-    *    - Game tables
-    *    - Bar
-    */
-
-    public static readonly List<Item> ShopItems = [
-        new Item() {
+    public static readonly List<CasinoGameItem> CasinoGames = [
+        new() {
             Name = "Slot machine",
+            // Description = "",
             Price = 1500,
-            Resource = "res://assets/sprites/casino/slot_machine.png"
+            Resource = $"{Constants.ASSET_SPRITE_CASINO_BASE_PATH}/slot_machine.png",
         },
-        new Item() {
+        new() {
             Name = "Roulette",
+            Description = "Requires a dealer",
             Price = 6000,
-            Resource = "res://assets/sprites/casino/roulette.png"
+            Resource = $"{Constants.ASSET_SPRITE_CASINO_BASE_PATH}/roulette.png",
         },
-        new Item() {
+        new() {
             Name = "Poker",
+            Description = "Requires a dealer",
             Price = 10000,
-            Resource = "res://assets/sprites/casino/poker.png"
-        }
-    ];
-
-    public static readonly List<Item> ShopStatueItems = [
-        new Item() {
-            Name = "Dice",
-            Price = 15000,
-            Resource = "res://assets/sprites/casino/statue1.png"
-        }
+            Resource = $"{Constants.ASSET_SPRITE_CASINO_BASE_PATH}/poker.png",
+        },
     ];
 
     public static readonly List<StatueItem> Statues = [
-        new StatueItem() {
+        new() {
             Name = "Dice",
-            Description = "-5% Customer base win rate",
-            Resource = "res://assets/sprites/casino/statue1.png"
+            Description = "+10% Customer average time spent",
+            Price = 50000,
+            Resource = $"{Constants.ASSET_SPRITE_CASINO_BASE_PATH}/statue1.png",
+            CustomerAvgTimeSpentMultiplier = 1.0f + 0.1f,
         },
-        new StatueItem() {
+        new() {
             Name = "Ace",
-            Description = "-5% Customer base win rate",
-            Resource = "res://assets/sprites/casino/statue2.png"
+            Description = "-25% Shop prices",
+            Price = 55000,
+            Resource = $"{Constants.ASSET_SPRITE_CASINO_BASE_PATH}/statue2.png",
+            ShopPricesMultiplier = 1.0f - 0.25f,
         },
-        new StatueItem() {
+        new() {
             Name = "Club",
-            Description = "+5% Customer addicts\n-5% Customer cheaters",
-            Resource = "res://assets/sprites/casino/statue3.png"
+            Description = "+5% Customer addicts\n-2% Customer cheaters",
+            Price = 60000,
+            Resource = $"{Constants.ASSET_SPRITE_CASINO_BASE_PATH}/statue3.png",
+            CustomerAddictsMultiplier = 1.0f + 0.05f,
+            CustomerCheatersMultiplier = 1.0f - 0.02f,
         },
-        new StatueItem() {
+        new() {
             Name = "Diamond",
-            Description = "-5% Customer base win rate",
-            Resource = "res://assets/sprites/casino/statue4.png"
+            Description = "-50% Chance of a machine breaking",
+            Price = 70000,
+            Resource = $"{Constants.ASSET_SPRITE_CASINO_BASE_PATH}/statue4.png",
+            ChanceMachineBreakMultiplier = 1.0f - 0.5f,
         },
-        new StatueItem() {
+        new() {
             Name = "Heart",
             Description = "-5% Customer base win rate",
-            Resource = "res://assets/sprites/casino/statue5.png"
-        }
+            Price = 100000,
+            Resource = $"{Constants.ASSET_SPRITE_CASINO_BASE_PATH}/statue5.png",
+            CustomerBaseWinRateMultiplier = 1.0f - 0.05f,
+        },
+    ];
+
+    public static readonly Dictionary<(Gender, Profession), List<string>> AvailableCharacters = new()
+    {
+        { (Gender.Unknown, Profession.Player), [
+            "character_34.res", "character_35.res", "character_36.res", "character_37.res",
+            "character_38.res", "character_39.res",
+        ] },
+        { (Gender.Male, Profession.Player), [
+            "character_1.res", "character_2.res", "character_3.res", "character_4.res",
+            "character_8.res", "character_16.res", "character_18.res", "character_19.res",
+            "character_20.res", "character_22.res", "character_24.res", "character_25.res",
+            "character_28.res", "character_32.res",
+        ] },
+        { (Gender.Female, Profession.Player), [
+            "character_0.res", "character_12.res", "character_13.res", "character_14.res",
+            "character_23.res", "character_27.res", "character_33.res",
+        ]},
+        { (Gender.Male, Profession.Customer), [
+            "character_1.res", "character_2.res", "character_3.res", "character_4.res",
+            "character_8.res", "character_16.res", "character_18.res", "character_19.res",
+            "character_20.res", "character_22.res", "character_24.res", "character_25.res",
+            "character_28.res", "character_30.res", "character_32.res",
+        ] },
+        { (Gender.Female, Profession.Customer), [
+            "character_0.res", "character_12.res", "character_13.res", "character_14.res",
+            "character_23.res", "character_27.res", "character_31.res", "character_33.res",
+        ] },
+        { (Gender.Male, Profession.Security), [ "character_5.res", "character_6.res", "character_7.res", ] },
+        { (Gender.Female, Profession.Security), [ "character_26.res", ] },
+        { (Gender.Male, Profession.Bartender), [ "character_21.res", ] },
+        { (Gender.Female, Profession.Bartender), [ "character_17.res", ] },
+        { (Gender.Male, Profession.Dealer), [ "character_9.res", "character_11.res", ] },
+        { (Gender.Female, Profession.Dealer), [ "character_10.res", "character_15.res", ] },
+    };
+
+    public static Dictionary<Gender, List<string>> Names = new()
+    {
+        { Gender.Male, [ "Elliot", "Branden", "Linwood", "Hugo", "Archer", "Rolland", "Garret", "John", "Paul", "Phillis", "Silas", "Jeffrey", "Jordan", "Dixon", "Derrick", "Russel", "Cooper", "Lee", "Bryan", "David", "Jefferson" ] },
+        { Gender.Female, [ "Nena", "Denice", "Brianna", "Loraine", "Abi", "Shanna", "Samantha", "Lynne", "Janna", "Annette", "Lizette", "Eleanor" ] },
+        { Gender.Unknown, [ "Chanda", "Meztli", "Fedlimid", "Khordad", "Feidlimid", "Sushila" ] },
+    };
+
+    public static List<string> Surnames = [
+        "Fiddler", "Coleman", "Dawson", "Mathewson", "Horton", "Moss", "Barr", "Hathway",
+        "Evelyn", "Baron", "Lum", "Godfrey", "Knowles", "Stone", "Hollins",
+        "Rowe", "Wayne", "Hall", "Darnell", "Ayers", "Spurling", "Gates",
+        "Haden", "Michaelson", "Peck"
     ];
 }

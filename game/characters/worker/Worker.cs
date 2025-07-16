@@ -2,6 +2,8 @@ using Godot;
 using System;
 using System.Text;
 
+namespace ProjectGJ.Characters.Worker;
+
 public partial class Worker : CharacterBody2D
 {
 

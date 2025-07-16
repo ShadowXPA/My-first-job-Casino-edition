@@ -1,6 +1,9 @@
 using Godot;
+using ProjectGJ.Scripts;
 using System;
 using System.Collections.Generic;
+
+namespace ProjectGJ.Components.Interactable;
 
 [GlobalClass]
 public partial class PlayerInteractable : Area2D

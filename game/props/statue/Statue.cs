@@ -1,6 +1,11 @@
 using Godot;
+using ProjectGJ.Components.Interactable;
+using ProjectGJ.Scripts;
+using ProjectGJ.Scripts.Items;
 using System;
 using System.Collections.Generic;
+
+namespace ProjectGJ.Props.Statue;
 
 public partial class Statue : StaticBody2D
 {

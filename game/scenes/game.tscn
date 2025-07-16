@@ -35,10 +35,12 @@ zoom = Vector2(2.5, 2.5)
 wait_time = 5.0
 autostart = true
 
-[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("Hud", "GameTimer", "Player", "CustomerContainer", "WorkerContainer")]
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("GameTimer", "Player", "CustomerContainer", "WorkerContainer", "Hud", "ShopMenu", "StatueMenu")]
 script = ExtResource("3_lnu2h")
-Hud = NodePath("../UIElements/HUD")
 GameTimer = NodePath("../GameTimer")
 Player = NodePath("../Player")
 CustomerContainer = NodePath("../Customers")
 WorkerContainer = NodePath("../Workers")
+Hud = NodePath("../UIElements/HUD")
+ShopMenu = NodePath("../UIElements/ShopMenu")
+StatueMenu = NodePath("../UIElements/StatueMenu")

@@ -1,5 +1,9 @@
 using Godot;
+using ProjectGJ.Components.Interactable;
+using ProjectGJ.Scripts;
 using System;
+
+namespace ProjectGJ.Props.Computer;
 
 public partial class Computer : StaticBody2D
 {

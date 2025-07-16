@@ -1,6 +1,11 @@
 using Godot;
+using ProjectGJ.Scripts;
+using ProjectGJ.Scripts.Items;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ProjectGJ.Ui.Hud;
 
 public partial class Hud : Control
 {
@@ -8,6 +13,7 @@ public partial class Hud : Control
 	public Label? Day { get; private set; }
 	public Label? Money { get; private set; }
 	public Control? Transactions { get; private set; }
+	public Control? Notifications { get; private set; }
 	public VBoxContainer? Actions { get; private set; }
 
 	public override void _Ready()
@@ -16,15 +22,22 @@ public partial class Hud : Control
 		Day = GetNode<Label>("%Day");
 		Money = GetNode<Label>("%Money");
 		Transactions = GetNode<Control>("%Transactions");
+		Notifications = GetNode<Control>("%Notifications");
 		Actions = GetNode<VBoxContainer>("%Actions");
-		SignalBus.PlayerInteracting += PlayerInteracting;
-		SignalBus.PlayerStoppedInteracting += PlayerStoppedInteracting;
+		SignalBus.PlayerInteracting += OnPlayerInteracting;
+		SignalBus.PlayerStoppedInteracting += OnPlayerStoppedInteracting;
+		SignalBus.GameTimeChanged += OnGameTimeChanged;
+		SignalBus.PlayerMoneyTransaction += OnPlayerMoneyTransaction;
+		SignalBus.NotifyPlayer += OnNotifyPlayer;
 	}
 
 	public override void _ExitTree()
 	{
-		SignalBus.PlayerInteracting -= PlayerInteracting;
-		SignalBus.PlayerStoppedInteracting -= PlayerStoppedInteracting;
+		SignalBus.PlayerInteracting -= OnPlayerInteracting;
+		SignalBus.PlayerStoppedInteracting -= OnPlayerStoppedInteracting;
+		SignalBus.GameTimeChanged -= OnGameTimeChanged;
+		SignalBus.PlayerMoneyTransaction -= OnPlayerMoneyTransaction;
+		SignalBus.NotifyPlayer -= OnNotifyPlayer;
 	}
 
 	public void SetTimeAndDay(int time)
@@ -39,7 +52,8 @@ public partial class Hud : Control
 	{
 		if (Money is null) return;
 
-		Money.Text = $"${money}";
+		Money.Text = $"{(money < 0 ? "-" : "")}${Mathf.Abs(money)}";
+		Money.Modulate = money < 0 ? new Color(1, 0, 0, 1) : new Color(1, 1, 1, 1);
 	}
 
 	public void AddTransaction(int amount)
@@ -50,13 +64,12 @@ public partial class Hud : Control
 		label.Text = $"{(amount < 0 ? "-" : "+")}${Mathf.Abs(amount)}";
 		label.Modulate = new Color(amount < 0 ? 1 : 0, amount > 0 ? 1 : 0, amount == 0 ? 1 : 0, 1);
 		Transactions.AddChild(label);
-		label.HorizontalAlignment = HorizontalAlignment.Right;
 
 		var tween = CreateTween();
-		var endPosition = label.Position + Vector2.Down * 50;
+		var endPosition = label.Position + Vector2.Down * 25;
 
 		tween.TweenProperty(label, "position", endPosition, 1.5f).SetTrans(Tween.TransitionType.Circ).SetEase(Tween.EaseType.Out);
-		tween.Parallel().TweenProperty(label, "modulate:a", 0.0f, 1.5f);
+		tween.TweenProperty(label, "modulate:a", 0.0f, 1.0f);
 		tween.TweenCallback(Callable.From(() =>
 			{
 				label.QueueFree();
@@ -66,7 +79,25 @@ public partial class Hud : Control
 		tween.Play();
 	}
 
-	private void PlayerInteracting(List<Button> actions)
+	public void AddNotification(Label label, double delay = 5)
+	{
+		if (Notifications is null) return;
+
+		Notifications.AddChild(label);
+
+		var tween = CreateTween();
+
+		tween.TweenProperty(label, "modulate:a", 0.0f, 1.0f).SetDelay(delay);
+		tween.TweenCallback(Callable.From(() =>
+			{
+				label.QueueFree();
+				tween.Kill();
+			}));
+
+		tween.Play();
+	}
+
+	private void OnPlayerInteracting(List<Button> actions)
 	{
 		foreach (var action in actions)
 		{
@@ -74,11 +105,29 @@ public partial class Hud : Control
 		}
 	}
 
-	private void PlayerStoppedInteracting(List<Button> actions)
+	private void OnPlayerStoppedInteracting(List<Button> actions)
 	{
 		foreach (var action in actions)
 		{
 			Actions?.RemoveChild(action);
 		}
+	}
+
+	private void OnGameTimeChanged(int time)
+	{
+		SetTimeAndDay(time);
+	}
+
+	private void OnPlayerMoneyTransaction(Transaction transaction)
+	{
+		SetMoney(transaction.AmountAfterTransaction);
+		AddTransaction(transaction.TransactionAmount);
+	}
+
+	private void OnNotifyPlayer(string message)
+	{
+		var label = new Label();
+		label.Text = message;
+		AddNotification(label);
 	}
 }

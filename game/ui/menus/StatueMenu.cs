@@ -1,6 +1,11 @@
 using Godot;
+using ProjectGJ.Scripts;
+using ProjectGJ.Scripts.Items;
+using ProjectGJ.Ui.Shop;
 using System;
 using System.Collections.Generic;
+
+namespace ProjectGJ.Ui.Menus;
 
 public partial class StatueMenu : VBoxContainer
 {
@@ -12,16 +17,18 @@ public partial class StatueMenu : VBoxContainer
 
 	public override void _Ready()
 	{
-		SignalBus.StatueInventoryButtonPressed += OnStatueInventoryPressed;
 		_statueList = GetNode<HBoxContainer>("%StatueList");
 		_exitButton = GetNode<Button>("%Exit");
 		_exitButton.Pressed += () => Visible = false;
-		AddStatues(GameItems.Statues); // TODO: change this to acquired statues
+		// AddStatues(GameItems.Statues); // TODO: change this to acquired statues
+		SignalBus.StatueInventoryButtonPressed += OnStatueInventoryPressed;
+		SignalBus.PlayerBoughtStatue += OnPlayerBoughtStatue;
 	}
 
 	public override void _ExitTree()
 	{
 		SignalBus.StatueInventoryButtonPressed -= OnStatueInventoryPressed;
+		SignalBus.PlayerBoughtStatue -= OnPlayerBoughtStatue;
 	}
 
 	public void AddStatues(List<StatueItem> items)
@@ -31,7 +38,7 @@ public partial class StatueMenu : VBoxContainer
 			var shopItem = ShopItem?.Instantiate<ShopItem>();
 			_statueList?.AddChild(shopItem);
 			var button = Utils.CreateActionButton("Select", () => SelectedStatue(item), HorizontalAlignment.Center);
-			shopItem?.SetItem(item.Name, item.Description, item.Resource, button);
+			shopItem?.SetItem(item, button);
 		}
 	}
 
@@ -43,5 +50,10 @@ public partial class StatueMenu : VBoxContainer
 	private void OnStatueInventoryPressed(bool open)
 	{
 		Visible = open;
+	}
+
+	private void OnPlayerBoughtStatue(StatueItem statue)
+	{
+		AddStatues([statue]);
 	}
 }

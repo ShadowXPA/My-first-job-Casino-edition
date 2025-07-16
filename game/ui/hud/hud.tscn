@@ -1,14 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cegnb4ag1qcju"]
+[gd_scene load_steps=2 format=3 uid="uid://cegnb4ag1qcju"]
 
 [ext_resource type="Script" uid="uid://yqb1sd1i13vt" path="res://ui/hud/Hud.cs" id="1_xmswo"]
-
-[sub_resource type="Animation" id="Animation_xmswo"]
-resource_name = "fade_move"
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_4d6w6"]
-_data = {
-&"fade_move": SubResource("Animation_xmswo")
-}
 
 [node name="HUD" type="Control"]
 layout_mode = 3
@@ -58,18 +50,11 @@ theme_override_constants/margin_bottom = 10
 [node name="VBoxContainer" type="VBoxContainer" parent="TopRight"]
 layout_direction = 3
 layout_mode = 2
-size_flags_horizontal = 8
 
 [node name="Money" type="Label" parent="TopRight/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "$Money"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="TopRight/VBoxContainer"]
-unique_name_in_owner = true
-libraries = {
-&"": SubResource("AnimationLibrary_4d6w6")
-}
 
 [node name="Transactions" type="Control" parent="TopRight/VBoxContainer"]
 unique_name_in_owner = true
@@ -92,3 +77,25 @@ theme_override_constants/margin_bottom = 10
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 5
+
+[node name="BottomRight" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Notifications" type="VBoxContainer" parent="BottomRight"]
+unique_name_in_owner = true
+z_index = 1
+layout_direction = 3
+layout_mode = 2

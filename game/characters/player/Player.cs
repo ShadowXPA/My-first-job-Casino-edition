@@ -1,6 +1,9 @@
 using Godot;
+using ProjectGJ.Scripts;
 using System;
 using System.Text;
+
+namespace ProjectGJ.Characters.Player;
 
 public partial class Player : CharacterBody2D
 {
@@ -21,7 +24,7 @@ public partial class Player : CharacterBody2D
 	public override void _PhysicsProcess(double delta)
 	{
 		Vector2 rawInput = Input.GetVector("move_left", "move_right", "move_up", "move_down");
-		Vector2 direction = Utils.GetCardinalDirection(rawInput);
+		Vector2 direction = rawInput.ToCardinalDirection();
 		var sprinting = Input.IsActionPressed("sprint") ? 1 : 0;
 		var speedModifier = SprintMultiplier * sprinting + 1.0f;
 
@@ -32,7 +35,7 @@ public partial class Player : CharacterBody2D
 		_lastDirection = direction;
 	}
 
-	public void SetCharacter(string resource)
+	public void SetCharacterResource(string resource)
 	{
 		if (_animatedSprite is null) return;
 
