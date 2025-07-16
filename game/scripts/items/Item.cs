@@ -11,4 +11,24 @@ public class Item
     public int FinalPrice { get { return Mathf.FloorToInt(Price * PriceMultiplier); } }
     public string? Resource { get; set; }
     public virtual string PriceString() => $"${FinalPrice}";
+
+    private static long _idCount;
+    private long _id;
+
+    public Item()
+    {
+        _id = _idCount++;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == this) return true;
+        if (obj is null || obj is not Item item) return false;
+        return item._id == _id;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }

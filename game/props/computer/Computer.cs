@@ -16,23 +16,30 @@ public partial class Computer : StaticBody2D
 		_playerInteractable = GetNode<PlayerInteractable>("%PlayerInteractable");
 
 		var shopButton = Utils.CreateActionButton("Shop", OnShopPressed);
+		var inventoryButton = Utils.CreateActionButton("Inventory", OnInventoryPressed);
 		var viewStatsButton = Utils.CreateActionButton("View stats", OnViewStatsPressed);
 
 		_playerInteractable.Actions.Add(shopButton);
+		_playerInteractable.Actions.Add(inventoryButton);
 		_playerInteractable.Actions.Add(viewStatsButton);
 
 		_playerInteractable.EnterAction += () => _animatedSprite.Play("on");
 		_playerInteractable.ExitAction += () =>
 		{
 			_animatedSprite.Play("off");
-			SignalBus.BroadcastShopButtonPressed(false);
+			SignalBus.BroadcastShopMenuButtonPressed(false);
+			SignalBus.BroadcastInventoryMenuButtonPressed(false);
 		};
 	}
 
 	private void OnShopPressed()
 	{
-		GD.Print("Pressed SHOP!");
-		SignalBus.BroadcastShopButtonPressed();
+		SignalBus.BroadcastShopMenuButtonPressed();
+	}
+
+	private void OnInventoryPressed()
+	{
+		SignalBus.BroadcastInventoryMenuButtonPressed();
 	}
 
 	private void OnViewStatsPressed()

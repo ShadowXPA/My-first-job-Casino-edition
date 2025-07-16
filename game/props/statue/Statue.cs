@@ -20,7 +20,7 @@ public partial class Statue : StaticBody2D
 		var changeStatueButton = Utils.CreateActionButton("Change", OnChangeStatuePressed);
 
 		_playerInteractable.Actions.Add(changeStatueButton);
-		_playerInteractable.ExitAction += () => SignalBus.BroadcastStatueInventoryButtonPressed(false);
+		_playerInteractable.ExitAction += () => SignalBus.BroadcastStatueMenuButtonPressed(false);
 
 		SignalBus.PlayerSelectedStatue += SetStatue;
 	}
@@ -43,6 +43,6 @@ public partial class Statue : StaticBody2D
 
 	private void OnChangeStatuePressed()
 	{
-		SignalBus.BroadcastStatueInventoryButtonPressed();
+		SignalBus.BroadcastStatueMenuButtonPressed();
 	}
 }

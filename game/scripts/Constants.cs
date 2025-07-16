@@ -7,4 +7,5 @@ public static class Constants
 
     public readonly static int MIN_SALARY = 1000;
     public readonly static int MAX_SALARY = 10000;
+    public readonly static float SELL_PERCENTAGE = 0.75f;
 }

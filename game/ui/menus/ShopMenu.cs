@@ -37,14 +37,14 @@ public partial class ShopMenu : VBoxContainer
 		]);
 		AddStatues(GameItems.Statues);
 
-		SignalBus.ShopButtonPressed += OnShopPressed;
+		SignalBus.ShopMenuButtonPressed += OnShopPressed;
 		SignalBus.PlayerHiredWorker += OnWorkerHired;
 		SignalBus.PlayerBoughtStatue += OnStatueBought;
 	}
 
 	public override void _ExitTree()
 	{
-		SignalBus.ShopButtonPressed -= OnShopPressed;
+		SignalBus.ShopMenuButtonPressed -= OnShopPressed;
 		SignalBus.PlayerHiredWorker -= OnWorkerHired;
 		SignalBus.PlayerBoughtStatue -= OnStatueBought;
 	}
@@ -69,7 +69,6 @@ public partial class ShopMenu : VBoxContainer
 		foreach (var item in items)
 		{
 			var shopItem = ShopItem.Instantiate<ShopItem>();
-			shopItem.SetMeta("id", GenerateShopItemId(item));
 			_hireList?.AddChild(shopItem);
 			var button = Utils.CreateActionButton("Hire", () => HirePerson(item), HorizontalAlignment.Center);
 			shopItem.SetItem(item, button);
@@ -83,7 +82,6 @@ public partial class ShopMenu : VBoxContainer
 		foreach (var item in items)
 		{
 			var shopItem = ShopItem.Instantiate<ShopItem>();
-			shopItem.SetMeta("id", GenerateShopItemId(item));
 			_statueList?.AddChild(shopItem);
 			var button = Utils.CreateActionButton("Buy", () => BuyStatue(item), HorizontalAlignment.Center);
 			shopItem.SetItem(item, button);
@@ -112,26 +110,12 @@ public partial class ShopMenu : VBoxContainer
 
 	private void HirePerson(WorkerItem item)
 	{
-		// TODO: check if can buy
 		SignalBus.BroadcastPlayerHiringWorker(item);
-		// _hireList?.RemoveChild(shopItem);
 	}
 
 	private void BuyStatue(StatueItem item)
 	{
-		// TODO: check if can buy
 		SignalBus.BroadcastPlayerBuyingStatue(item);
-
-		// if (shopItem.Actions is not null)
-		// {
-		// 	foreach (var action in shopItem.Actions.GetChildren())
-		// 	{
-		// 		shopItem.Actions.RemoveChild(action);
-		// 	}
-		// 	shopItem.Actions.AddChild(Utils.CreateActionButton("Bought", action: null, HorizontalAlignment.Center, disabled: true));
-		// }
-
-		// GD.PrintS("Bought statue:", item.Name, item.Price);
 	}
 
 	private void OnShopPressed(bool open)
@@ -143,12 +127,9 @@ public partial class ShopMenu : VBoxContainer
 	{
 		if (_hireList is null) return;
 
-		var shopItemId = GenerateShopItemId(worker);
-
 		foreach (var shopItem in _hireList.GetChildren().Cast<ShopItem>())
 		{
-			var id = shopItem.GetMeta("id").AsString();
-			if (id == shopItemId)
+			if (shopItem.IsItemEqual(worker))
 			{
 				_hireList.RemoveChild(shopItem);
 				break;
@@ -160,12 +141,9 @@ public partial class ShopMenu : VBoxContainer
 	{
 		if (_statueList is null) return;
 
-		var shopItemId = GenerateShopItemId(statue);
-
 		foreach (var shopItem in _statueList.GetChildren().Cast<ShopItem>())
 		{
-			var id = shopItem.GetMeta("id").AsString();
-			if (id == shopItemId)
+			if (shopItem.IsItemEqual(statue))
 			{
 				if (shopItem.Actions is not null)
 				{
@@ -182,10 +160,5 @@ public partial class ShopMenu : VBoxContainer
 
         if (statue.ShopPricesMultiplier is not null)
             ApplyPriceMultiplier((float)statue.ShopPricesMultiplier);
-	}
-
-	private string GenerateShopItemId(Item item)
-	{
-		return $"{item.Name}_{item.Description}_{item.Price}";
 	}
 }

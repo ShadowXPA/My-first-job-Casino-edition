@@ -30,8 +30,11 @@ public partial class GameManager : Node
 
     public override void _Ready()
     {
-        Hud?.SetTimeAndDay(_gameData.ElapsedTime);
-        Hud?.SetMoney(_gameData.Money);
+        SignalBus.BroadcastGameTimeChanged(_gameData.ElapsedTime);
+        SignalBus.BroadcastPlayerMoneyTransaction(new Transaction()
+        {
+            AmountAfterTransaction = _gameData.Money
+        });
 
         if (GameTimer is not null)
         {
@@ -78,7 +81,9 @@ public partial class GameManager : Node
         _gameData.ElapsedTime++;
         SignalBus.BroadcastGameTimeChanged(_gameData.ElapsedTime);
 
-        // TODO: every 30 days remove money from salary
+        // TODO: every 30 days remove money from salary, maintenance fees?
+        // TODO: every hour check for broken machines?
+        // TODO: every hour try to spawn more customers?
     }
 
     private void OnPlayerMoneyTransaction(Transaction transaction)

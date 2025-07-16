@@ -23,6 +23,11 @@ public partial class ShopItem : PanelContainer
 		Actions = GetNode<VBoxContainer>("%Actions");
 	}
 
+	public bool IsItemEqual(Item item)
+	{
+		return item.Equals(_item);
+	}
+
 	public void SetPriceMultiplier(float priceMultiplier)
 	{
 		if (_item is null) return;

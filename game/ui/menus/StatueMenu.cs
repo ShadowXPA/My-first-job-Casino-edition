@@ -21,13 +21,13 @@ public partial class StatueMenu : VBoxContainer
 		_exitButton = GetNode<Button>("%Exit");
 		_exitButton.Pressed += () => Visible = false;
 		// AddStatues(GameItems.Statues); // TODO: change this to acquired statues
-		SignalBus.StatueInventoryButtonPressed += OnStatueInventoryPressed;
+		SignalBus.StatueMenuButtonPressed += OnStatueInventoryPressed;
 		SignalBus.PlayerBoughtStatue += OnPlayerBoughtStatue;
 	}
 
 	public override void _ExitTree()
 	{
-		SignalBus.StatueInventoryButtonPressed -= OnStatueInventoryPressed;
+		SignalBus.StatueMenuButtonPressed -= OnStatueInventoryPressed;
 		SignalBus.PlayerBoughtStatue -= OnPlayerBoughtStatue;
 	}
 
