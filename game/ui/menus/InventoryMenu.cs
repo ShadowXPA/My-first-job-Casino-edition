@@ -3,6 +3,9 @@ using ProjectGJ.Scripts;
 using ProjectGJ.Scripts.Items;
 using ProjectGJ.Ui.Shop;
 using System;
+using System.Linq;
+
+namespace ProjectGJ.Ui.Menus;
 
 public partial class InventoryMenu : PanelContainer
 {
@@ -17,6 +20,9 @@ public partial class InventoryMenu : PanelContainer
 	public override void _Ready()
 	{
 		_gamesList = GetNode<GridContainer>("%GamesList");
+		var gamesListParent = _gamesList.GetParent().GetParent();
+		gamesListParent.QueueFree();
+		_gamesList = null;
 		_workersList = GetNode<GridContainer>("%WorkersList");
 		_statuesList = GetNode<GridContainer>("%StatuesList");
 		_exitButton = GetNode<Button>("%Exit");
@@ -26,6 +32,7 @@ public partial class InventoryMenu : PanelContainer
 		SignalBus.PlayerBoughtCasinoGame += OnPlayerBoughtCasinoGame;
 		SignalBus.PlayerHiredWorker += OnPlayerHiredWorker;
 		SignalBus.PlayerBoughtStatue += OnPlayerBoughtStatue;
+		SignalBus.NewDay += OnNewDay;
 	}
 
 	public override void _ExitTree()
@@ -34,6 +41,7 @@ public partial class InventoryMenu : PanelContainer
 		SignalBus.PlayerBoughtCasinoGame -= OnPlayerBoughtCasinoGame;
 		SignalBus.PlayerHiredWorker -= OnPlayerHiredWorker;
 		SignalBus.PlayerBoughtStatue -= OnPlayerBoughtStatue;
+		SignalBus.NewDay += OnNewDay;
 	}
 
 	private void OnInventoryButtonPressed(bool open)
@@ -47,12 +55,15 @@ public partial class InventoryMenu : PanelContainer
 
 		var shopItem = ShopItem.Instantiate<ShopItem>();
 		_gamesList?.AddChild(shopItem);
-		var button = Utils.CreateActionButton($"Sell (+${Mathf.FloorToInt(casinoGame.FinalPrice * Constants.SELL_PERCENTAGE)})", () => SellCasinoGame(casinoGame), HorizontalAlignment.Center);
+		var button = Utils.CreateActionButton($"Sell (+${Mathf.FloorToInt(casinoGame.FinalPrice * Constants.SELL_PERCENTAGE)})", () => SellCasinoGame(casinoGame, shopItem), HorizontalAlignment.Center);
 		shopItem.SetItem(casinoGame, button);
 	}
 
-	private void SellCasinoGame(CasinoGameItem casinoGame)
+	private void SellCasinoGame(CasinoGameItem casinoGame, ShopItem shopItem)
 	{
+		_gamesList?.RemoveChild(shopItem);
+		shopItem.QueueFree();
+		SignalBus.BroadcastPlayerSoldCasinoGame(casinoGame);
 	}
 
 	private void OnPlayerHiredWorker(WorkerItem worker)
@@ -61,13 +72,15 @@ public partial class InventoryMenu : PanelContainer
 
 		var shopItem = ShopItem.Instantiate<ShopItem>();
 		_workersList?.AddChild(shopItem);
-		// TODO: this is not gonna work well, the button will not update based on the days that have passed, since it only "updates" when the player is hired
-		var button = Utils.CreateActionButton($"Fire (-${Mathf.FloorToInt(worker.FinalPrice / (30 * worker.DaysWorked))})", () => FireWorker(worker), HorizontalAlignment.Center);
+		var button = Utils.CreateActionButton($"Fire (-${Mathf.FloorToInt(worker.FinalPrice / 30 * (worker.DaysWorked % 30))})", () => FireWorker(worker, shopItem), HorizontalAlignment.Center);
 		shopItem.SetItem(worker, button);
 	}
 
-	private void FireWorker(WorkerItem worker)
+	private void FireWorker(WorkerItem worker, ShopItem shopItem)
 	{
+		_workersList?.RemoveChild(shopItem);
+		shopItem.QueueFree();
+		SignalBus.BroadcastPlayerFiredWorker(worker);
 	}
 
 	private void OnPlayerBoughtStatue(StatueItem statue)
@@ -77,5 +90,20 @@ public partial class InventoryMenu : PanelContainer
 		var shopItem = ShopItem.Instantiate<ShopItem>();
 		_statuesList?.AddChild(shopItem);
 		shopItem.SetItem(statue);
+	}
+
+	private void OnNewDay()
+	{
+		if (_workersList is null) return;
+
+		foreach (var workerItem in _workersList.GetChildren().Cast<ShopItem>())
+		{
+			if (workerItem.Actions is not null)
+			{
+				var worker = (WorkerItem)workerItem.GetItem()!;
+				var button = workerItem.Actions.GetChild<Button>(0);
+				button.Text = $"Fire (-${Mathf.FloorToInt(worker.FinalPrice / 30 * (worker.DaysWorked % 30))})";
+			}
+		}
 	}
 }

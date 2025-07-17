@@ -18,23 +18,15 @@ public partial class GameManager : Node
     public Node? CustomerContainer;
     [Export]
     public Node? WorkerContainer;
-    [ExportGroup("UI")]
     [Export]
     public Hud? Hud;
-    [Export]
-    public ShopMenu? ShopMenu;
-    [Export]
-    public StatueMenu? StatueMenu;
 
     private GameData _gameData = new();
 
     public override void _Ready()
     {
         SignalBus.BroadcastGameTimeChanged(_gameData.ElapsedTime);
-        SignalBus.BroadcastPlayerMoneyTransaction(new Transaction()
-        {
-            AmountAfterTransaction = _gameData.Money
-        });
+        Hud?.SetMoney(_gameData.Money);
 
         if (GameTimer is not null)
         {
@@ -48,6 +40,8 @@ public partial class GameManager : Node
         SignalBus.PlayerBoughtCasinoGame += OnPlayerBoughtCasinoGame;
         SignalBus.PlayerHiredWorker += OnPlayerHiredWorker;
         SignalBus.PlayerBoughtStatue += OnPlayerBoughtStatue;
+        SignalBus.PlayerSoldCasinoGame += OnPlayerSoldCasinoGame;
+        SignalBus.PlayerFiredWorker += OnPlayerFiredWorker;
 
         Player?.SetCharacterResource(_gameData.CharacterResource);
     }
@@ -66,6 +60,8 @@ public partial class GameManager : Node
         SignalBus.PlayerBoughtCasinoGame -= OnPlayerBoughtCasinoGame;
         SignalBus.PlayerHiredWorker -= OnPlayerHiredWorker;
         SignalBus.PlayerBoughtStatue -= OnPlayerBoughtStatue;
+        SignalBus.PlayerSoldCasinoGame -= OnPlayerSoldCasinoGame;
+        SignalBus.PlayerFiredWorker -= OnPlayerFiredWorker;
     }
 
     public void LoadGame()
@@ -81,9 +77,40 @@ public partial class GameManager : Node
         _gameData.ElapsedTime++;
         SignalBus.BroadcastGameTimeChanged(_gameData.ElapsedTime);
 
-        // TODO: every 30 days remove money from salary, maintenance fees?
         // TODO: every hour check for broken machines?
         // TODO: every hour try to spawn more customers?
+        var (hour, minutes) = Utils.GetHoursAndMinutes(_gameData.ElapsedTime);
+        if (hour % 24 == 0 && minutes % 60 == 0)
+        {
+            foreach (var worker in _gameData.Inventory.Workers)
+            {
+                worker.DaysWorked++;
+            }
+
+            SignalBus.BroadcastNewDay();
+        }
+
+        // TODO: every 30 days remove money from salary, maintenance fees?
+        var days = Utils.GetDays(_gameData.ElapsedTime);
+        if (days % 30 == 0 && hour % 24 == 0 && minutes % 60 == 0)
+        {
+            var salaries = 0;
+
+            foreach (var worker in _gameData.Inventory.Workers)
+            {
+                salaries += Mathf.FloorToInt(worker.FinalPrice / 30 * Mathf.Min(worker.DaysWorked, 30));
+            }
+
+            var expenses = -salaries;
+
+            var transaction = new Transaction();
+            transaction.AmountBeforeTransaction = _gameData.Money;
+            _gameData.Money += expenses;
+            transaction.AmountAfterTransaction = _gameData.Money;
+            transaction.TransactionAmount = expenses;
+            SignalBus.BroadcastPlayerMoneyTransaction(transaction);
+            SignalBus.BroadcastNotifyPlayer("30 days have passed, you have paid your expenses.");
+        }
     }
 
     private void OnPlayerMoneyTransaction(Transaction transaction)
@@ -123,16 +150,7 @@ public partial class GameManager : Node
             return;
         }
 
-        // TODO: don't remove money when HIRING, only after 30 days or when firing the worker...
-        // var transaction = new Transaction();
-
-        // transaction.AmountBeforeTransaction = _gameData.Money;
-        // _gameData.Money += -worker.FinalPrice;
-        // transaction.AmountAfterTransaction = _gameData.Money;
-        // transaction.TransactionAmount = -worker.FinalPrice;
-
         SignalBus.BroadcastPlayerHiredWorker(worker);
-        // SignalBus.BroadcastPlayerMoneyTransaction(transaction);
     }
 
     private void OnPlayerHiredWorker(WorkerItem worker)
@@ -163,5 +181,38 @@ public partial class GameManager : Node
     {
         _gameData.Inventory.Statues.Add(statue);
         SignalBus.BroadcastNotifyPlayer($"Got permanent buff: {statue.Description}");
+    }
+
+    private void OnPlayerSoldCasinoGame(CasinoGameItem casinoGame)
+    {
+        var sellValue = Mathf.FloorToInt(casinoGame.FinalPrice * Constants.SELL_PERCENTAGE);
+
+        _gameData.Inventory.CasinoGames.Remove(casinoGame);
+
+        var transaction = new Transaction();
+
+        transaction.AmountBeforeTransaction = _gameData.Money;
+        _gameData.Money += sellValue;
+        transaction.AmountAfterTransaction = _gameData.Money;
+        transaction.TransactionAmount = sellValue;
+
+        SignalBus.BroadcastPlayerMoneyTransaction(transaction);
+    }
+
+    private void OnPlayerFiredWorker(WorkerItem worker)
+    {
+        var sellValue = -Mathf.FloorToInt(worker.FinalPrice / 30 * (worker.DaysWorked % 30));
+
+        worker.Station?.SetWorker(null);
+        _gameData.Inventory.Workers.Remove(worker);
+
+        var transaction = new Transaction();
+
+        transaction.AmountBeforeTransaction = _gameData.Money;
+        _gameData.Money += sellValue;
+        transaction.AmountAfterTransaction = _gameData.Money;
+        transaction.TransactionAmount = sellValue;
+
+        SignalBus.BroadcastPlayerMoneyTransaction(transaction);
     }
 }

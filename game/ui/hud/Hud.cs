@@ -1,9 +1,7 @@
 using Godot;
 using ProjectGJ.Scripts;
-using ProjectGJ.Scripts.Items;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ProjectGJ.Ui.Hud;
 

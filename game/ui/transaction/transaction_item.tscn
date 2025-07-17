@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=3 uid="uid://clebi4x4tot3h"]
+
+[ext_resource type="Script" uid="uid://boigqrvywke0i" path="res://ui/transaction/TransactionItem.cs" id="1_8wxim"]
+
+[node name="TransactionItem" type="MarginContainer"]
+offset_right = 158.0
+offset_bottom = 62.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("1_8wxim")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Before" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Before"]
+layout_mode = 2
+text = "Before Transaction:"
+
+[node name="BeforeTransaction" type="Label" parent="VBoxContainer/Before"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "$0"
+
+[node name="After" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/After"]
+layout_mode = 2
+text = "After Transaction:"
+
+[node name="AfterTransaction" type="Label" parent="VBoxContainer/After"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "$0"
+
+[node name="Amount" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Amount"]
+layout_mode = 2
+text = "Transaction Amount:"
+
+[node name="TransactionAmount" type="Label" parent="VBoxContainer/Amount"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "$0"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20

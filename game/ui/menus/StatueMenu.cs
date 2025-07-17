@@ -20,7 +20,6 @@ public partial class StatueMenu : VBoxContainer
 		_statueList = GetNode<HBoxContainer>("%StatueList");
 		_exitButton = GetNode<Button>("%Exit");
 		_exitButton.Pressed += () => Visible = false;
-		// AddStatues(GameItems.Statues); // TODO: change this to acquired statues
 		SignalBus.StatueMenuButtonPressed += OnStatueInventoryPressed;
 		SignalBus.PlayerBoughtStatue += OnPlayerBoughtStatue;
 	}

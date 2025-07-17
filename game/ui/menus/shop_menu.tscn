@@ -33,13 +33,13 @@ size_flags_vertical = 3
 current_tab = 0
 use_hidden_tabs_for_min_size = true
 
-[node name="Buy" type="ScrollContainer" parent="TabContainer"]
+[node name="Casino Games" type="ScrollContainer" parent="TabContainer"]
 layout_mode = 2
 horizontal_scroll_mode = 4
 vertical_scroll_mode = 0
 metadata/_tab_index = 0
 
-[node name="BuyList" type="HBoxContainer" parent="TabContainer/Buy"]
+[node name="BuyList" type="HBoxContainer" parent="TabContainer/Casino Games"]
 unique_name_in_owner = true
 layout_mode = 2
 

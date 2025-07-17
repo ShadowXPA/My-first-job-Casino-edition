@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using Godot;
 using ProjectGJ.Scripts.Items;
 
@@ -37,15 +36,14 @@ public static class SignalBus
     public static void BroadcastShopMenuButtonPressed(bool open = true) => ShopMenuButtonPressed?.Invoke(open);
     public static Action<bool>? InventoryMenuButtonPressed;
     public static void BroadcastInventoryMenuButtonPressed(bool open = true) => InventoryMenuButtonPressed?.Invoke(open);
+    public static Action<bool>? TransactionsMenuButtonPressed;
+    public static void BroadcastTransactionsMenuButtonPressed(bool open = true) => TransactionsMenuButtonPressed?.Invoke(open);
     public static Action<bool>? StatueMenuButtonPressed;
     public static void BroadcastStatueMenuButtonPressed(bool open = true) => StatueMenuButtonPressed?.Invoke(open);
-    // TODO: this
-    public static Action<CasinoGameItem>? PlayerSellingCasinoGame;
-    public static void BroadcastPlayerSellingCasinoGame(CasinoGameItem casinoGame) => PlayerSellingCasinoGame?.Invoke(casinoGame);
     public static Action<CasinoGameItem>? PlayerSoldCasinoGame;
     public static void BroadcastPlayerSoldCasinoGame(CasinoGameItem casinoGame) => PlayerSoldCasinoGame?.Invoke(casinoGame);
-    public static Action<WorkerItem>? PlayerFiringWorker;
-    public static void BroadcastPlayerFiringWorker(WorkerItem worker) => PlayerFiringWorker?.Invoke(worker);
     public static Action<WorkerItem>? PlayerFiredWorker;
     public static void BroadcastPlayerFiredWorker(WorkerItem worker) => PlayerFiredWorker?.Invoke(worker);
+    public static Action? NewDay;
+    public static void BroadcastNewDay() => NewDay?.Invoke();
 }

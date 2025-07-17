@@ -23,6 +23,9 @@ public partial class ShopMenu : VBoxContainer
 	public override void _Ready()
 	{
 		_buyList = GetNode<HBoxContainer>("%BuyList");
+		var buyListParent = _buyList.GetParent();
+		buyListParent.QueueFree();
+		_buyList = null;
 		_hireList = GetNode<HBoxContainer>("%HireList");
 		_statueList = GetNode<HBoxContainer>("%StatueList");
 		_exitButton = GetNode<Button>("%Exit");
@@ -40,6 +43,7 @@ public partial class ShopMenu : VBoxContainer
 		SignalBus.ShopMenuButtonPressed += OnShopPressed;
 		SignalBus.PlayerHiredWorker += OnWorkerHired;
 		SignalBus.PlayerBoughtStatue += OnStatueBought;
+		SignalBus.NewDay += OnNewDay;
 	}
 
 	public override void _ExitTree()
@@ -47,6 +51,7 @@ public partial class ShopMenu : VBoxContainer
 		SignalBus.ShopMenuButtonPressed -= OnShopPressed;
 		SignalBus.PlayerHiredWorker -= OnWorkerHired;
 		SignalBus.PlayerBoughtStatue -= OnStatueBought;
+		SignalBus.NewDay -= OnNewDay;
 	}
 
 	public void AddCasinoGames(List<CasinoGameItem> items)
@@ -132,6 +137,7 @@ public partial class ShopMenu : VBoxContainer
 			if (shopItem.IsItemEqual(worker))
 			{
 				_hireList.RemoveChild(shopItem);
+				shopItem.QueueFree();
 				break;
 			}
 		}
@@ -150,6 +156,7 @@ public partial class ShopMenu : VBoxContainer
 					foreach (var action in shopItem.Actions.GetChildren())
 					{
 						shopItem.Actions.RemoveChild(action);
+						action.QueueFree();
 					}
 					shopItem.Actions.AddChild(Utils.CreateActionButton("Bought", action: null, HorizontalAlignment.Center, disabled: true));
 				}
@@ -158,7 +165,26 @@ public partial class ShopMenu : VBoxContainer
 			}
 		}
 
-        if (statue.ShopPricesMultiplier is not null)
-            ApplyPriceMultiplier((float)statue.ShopPricesMultiplier);
+		if (statue.ShopPricesMultiplier is not null)
+			ApplyPriceMultiplier((float)statue.ShopPricesMultiplier);
+	}
+
+	private void OnNewDay()
+	{
+		if (_hireList is null) return;
+
+		foreach (var child in _hireList.GetChildren())
+		{
+			_hireList.RemoveChild(child);
+			child.QueueFree();
+		}
+
+		AddPeople([
+			Utils.GenerateRandomWorker(),
+			Utils.GenerateRandomWorker(),
+			Utils.GenerateRandomWorker(),
+			Utils.GenerateRandomWorker(),
+			Utils.GenerateRandomWorker(),
+		]);
 	}
 }

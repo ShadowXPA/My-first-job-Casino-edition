@@ -23,6 +23,11 @@ public partial class ShopItem : PanelContainer
 		Actions = GetNode<VBoxContainer>("%Actions");
 	}
 
+	public Item? GetItem()
+	{
+		return _item;
+	}
+
 	public bool IsItemEqual(Item item)
 	{
 		return item.Equals(_item);

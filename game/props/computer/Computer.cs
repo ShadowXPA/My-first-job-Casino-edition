@@ -17,11 +17,11 @@ public partial class Computer : StaticBody2D
 
 		var shopButton = Utils.CreateActionButton("Shop", OnShopPressed);
 		var inventoryButton = Utils.CreateActionButton("Inventory", OnInventoryPressed);
-		var viewStatsButton = Utils.CreateActionButton("View stats", OnViewStatsPressed);
+		var viewTransactionsButton = Utils.CreateActionButton("View transactions", OnViewTransactionsPressed);
 
 		_playerInteractable.Actions.Add(shopButton);
 		_playerInteractable.Actions.Add(inventoryButton);
-		_playerInteractable.Actions.Add(viewStatsButton);
+		_playerInteractable.Actions.Add(viewTransactionsButton);
 
 		_playerInteractable.EnterAction += () => _animatedSprite.Play("on");
 		_playerInteractable.ExitAction += () =>
@@ -29,6 +29,7 @@ public partial class Computer : StaticBody2D
 			_animatedSprite.Play("off");
 			SignalBus.BroadcastShopMenuButtonPressed(false);
 			SignalBus.BroadcastInventoryMenuButtonPressed(false);
+			SignalBus.BroadcastTransactionsMenuButtonPressed(false);
 		};
 	}
 
@@ -42,8 +43,8 @@ public partial class Computer : StaticBody2D
 		SignalBus.BroadcastInventoryMenuButtonPressed();
 	}
 
-	private void OnViewStatsPressed()
+	private void OnViewTransactionsPressed()
 	{
-		GD.Print("Pressed STATS!");
+		SignalBus.BroadcastTransactionsMenuButtonPressed();
 	}
 }
