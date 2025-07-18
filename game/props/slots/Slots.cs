@@ -8,33 +8,42 @@ namespace ProjectGJ.Props.Slots;
 
 public partial class Slots : StaticBody2D
 {
-    public Customer? Customer { get; private set; }
+    public Characters.Customer.Customer? Customer { get; private set; }
+    public bool CanOccupy => Customer is null && _on;
 
     private AnimatedSprite2D? _animationSprite;
     private PlayerInteractable? _playerInteractable;
     private Button? _repairButton;
+    private bool _on;
 
     public override void _Ready()
     {
         _animationSprite = GetNode<AnimatedSprite2D>("%Sprite");
         _playerInteractable = GetNode<PlayerInteractable>("%PlayerInteractable");
 
-        _repairButton = Utils.CreateActionButton("Repair", OnRepairPressed);
+        _repairButton = Utils.CreateActionButton($"Repair (-${Constants.SLOT_MACHINE_REPAIR_FEE})", OnRepairPressed);
         _playerInteractable.Actions.Add(_repairButton);
 
         PowerOn();
-
-        SignalBus.GameTimeChanged += OnTimeChanged;
     }
 
-    public override void _ExitTree()
+    public void Occupy(Characters.Customer.Customer? customer)
     {
-        SignalBus.GameTimeChanged += OnTimeChanged;
-    }
+        if (!_on) return;
 
-    public void Occupy(Customer customer)
-    {
         Customer = customer;
+    }
+
+    public void Break()
+    {
+        PowerOff();
+        Customer?.NextActivity();
+        Occupy(null);
+    }
+
+    public void Repair()
+    {
+        PowerOn();
     }
 
     private void PowerOn()
@@ -43,6 +52,7 @@ public partial class Slots : StaticBody2D
 
         _repairButton.Visible = false;
         _animationSprite.Play("on");
+        _on = true;
     }
 
     private void PowerOff()
@@ -51,21 +61,11 @@ public partial class Slots : StaticBody2D
 
         _repairButton.Visible = true;
         _animationSprite.Play("off");
+        _on = false;
     }
 
     private void OnRepairPressed()
     {
-        GD.Print("Pressed REPAIR!");
-        PowerOn();
-    }
-
-    private void OnTimeChanged(int elapsedTime)
-    {
-        if (GD.Randf() < 0.001f)
-        {
-        // TODO: kick the customer if it's here
-            PowerOff();
-            // SignalBus.BroadcastNotifyPlayer("Looks like a slot machine has broken down. Quick, fix it!");
-        }
+        SignalBus.BroadcastPlayerRepairingSlots(this);
     }
 }

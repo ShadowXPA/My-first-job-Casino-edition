@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://qjag7o6oyl0g"]
+
+[ext_resource type="Texture2D" uid="uid://butoegopmfvkj" path="res://icon.svg" id="1_5pbwh"]
+[ext_resource type="Script" uid="uid://jitrh8risuji" path="res://props/customer/CustomerHome.cs" id="1_6g86h"]
+
+[node name="CustomerHome" type="Node2D" groups=["home"]]
+script = ExtResource("1_6g86h")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 0, 0, 1)
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("1_5pbwh")

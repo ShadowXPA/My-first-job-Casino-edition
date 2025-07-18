@@ -1,8 +1,9 @@
 using Godot;
+using ProjectGJ.Props.Customer;
 using ProjectGJ.Props.Slots;
 using ProjectGJ.Scripts;
+using ProjectGJ.Scripts.Items;
 using System;
-using System.Collections;
 using System.Linq;
 using System.Text;
 
@@ -12,19 +13,23 @@ public partial class Customer : CharacterBody2D
 {
 	[ExportGroup("Movement")]
 	[Export]
-	public float Speed { get; set; } = 200.0f;
-	// TODO: type of customer, stats, money, activities
+	public float Speed { get; set; } = 100.0f;
+
+	public CustomerItem? CustomerItem { get; private set; }
+	public Label? CustomerName { get; private set; }
 
 	private AnimatedSprite2D? _animatedSprite;
 	private NavigationAgent2D? _navigationAgent;
 	private Vector2? _lastDirection;
 
 	private Node2D? _target;
+	private CustomerActivity? _currentActivity;
 
 	public override void _Ready()
 	{
 		_animatedSprite = GetNode<AnimatedSprite2D>("%Sprite");
 		_navigationAgent = GetNode<NavigationAgent2D>("%NavigationAgent");
+		CustomerName = GetNode<Label>("%Name");
 
 		_navigationAgent.VelocityComputed += OnVelocityComputed;
 	}
@@ -35,45 +40,15 @@ public partial class Customer : CharacterBody2D
 			_navigationAgent.VelocityComputed -= OnVelocityComputed;
 	}
 
-	public override void _PhysicsProcess(double delta)
+	public void SetCustomerItem(CustomerItem customerItem)
 	{
-		_target ??= (Node2D?)GetTree().GetNodesInGroup("slots").Where(n => ((Slots?)n)?.Customer is null)
-				.ElementAt(GD.RandRange(0, GetTree().GetNodesInGroup("slots").Where(n => ((Slots?) n)?.Customer is null).Count() - 1));
+		CustomerItem = customerItem;
+		SetCharacter(CustomerItem.Resource!);
 
-		if (_target is not null && _navigationAgent is not null && _navigationAgent.TargetPosition != _target.GlobalPosition)
+		if (CustomerName is not null)
 		{
-			((Slots)_target).Occupy(this);
-			_target.TopLevel = true;
-			_navigationAgent.TargetPosition = _target.GlobalPosition;
+			CustomerName.Text = customerItem.Name;
 		}
-
-		if (_target is not null && _navigationAgent is not null && _navigationAgent.IsNavigationFinished())
-		{
-			_lastDirection = GlobalPosition.DirectionTo(_target.GlobalPosition).ToCardinalDirection();
-			PlayAnimation(Vector2.Zero);
-			return;
-		}
-
-		if (_navigationAgent is not null && !_navigationAgent.IsNavigationFinished())
-		{
-			var nextPos = _navigationAgent.GetNextPathPosition();
-			var direction = GlobalPosition.DirectionTo(nextPos).ToCardinalDirection();
-			var newVelocity = direction * Speed;
-
-			if (_navigationAgent.AvoidanceEnabled)
-				_navigationAgent.Velocity = newVelocity;
-			else
-				OnVelocityComputed(newVelocity);
-
-			MoveAndSlide();
-			PlayAnimation(direction);
-			_lastDirection = direction;
-		}
-	}
-
-	public void OnVelocityComputed(Vector2 safeVelocity)
-	{
-		Velocity = safeVelocity;
 	}
 
 	public void SetCharacter(string resource)
@@ -81,6 +56,105 @@ public partial class Customer : CharacterBody2D
 		if (_animatedSprite is null) return;
 
 		_animatedSprite.SpriteFrames = GD.Load<SpriteFrames>(resource);
+	}
+
+	public void NextActivity()
+	{
+		if (CustomerItem is null || CustomerItem.Activities.Count == 0) return;
+
+		_currentActivity = CustomerItem.Activities[0];
+		CustomerItem.Activities.RemoveAt(0);
+		var activityName = _currentActivity.Activity.ToString().ToLower();
+		var nodes = GetTree().GetNodesInGroup(activityName);
+		var numNodes = nodes.Count;
+
+		while (numNodes != 0)
+		{
+			switch (_currentActivity.Activity)
+			{
+				case ActivityType.Home:
+					_target = (CustomerHome)nodes.PickRandom();
+					return;
+				case ActivityType.Bar:
+				case ActivityType.Poker:
+				case ActivityType.Roulette:
+					{
+						var workerStation = (WorkerStation)nodes.PickRandom();
+						var potentialTarget = workerStation.TryOccupyTable(this);
+
+						if (potentialTarget is not null)
+						{
+							_target = potentialTarget;
+							return;
+						}
+
+						nodes.Remove(potentialTarget);
+					}
+					break;
+				case ActivityType.Slots:
+					{
+						var potentialTarget = (Slots)nodes.PickRandom();
+
+						if (potentialTarget.CanOccupy)
+						{
+							potentialTarget.Occupy(this);
+							_target = potentialTarget;
+							return;
+						}
+
+						nodes.Remove(potentialTarget);
+					}
+					break;
+				default:
+					return;
+			}
+
+			numNodes--;
+		}
+
+		NextActivity();
+	}
+
+	public override void _PhysicsProcess(double delta)
+	{
+		if (_target is null || _navigationAgent is null) return;
+
+		if (_navigationAgent.TargetPosition != _target.GlobalPosition)
+		{
+			_navigationAgent.TargetPosition = _target.GlobalPosition;
+		}
+
+		if (_navigationAgent.IsNavigationFinished())
+		{
+			_lastDirection = GlobalPosition.DirectionTo(_target.GlobalPosition).ToCardinalDirection();
+			PlayAnimation(Vector2.Zero);
+			_target = null;
+
+			if (_currentActivity is not null && _currentActivity.Activity == ActivityType.Home)
+			{
+				QueueFree();
+			}
+
+			return;
+		}
+
+		var nextPos = _navigationAgent.GetNextPathPosition();
+		var direction = GlobalPosition.DirectionTo(nextPos).ToCardinalDirection();
+		var newVelocity = direction * Speed;
+
+		if (_navigationAgent.AvoidanceEnabled)
+			_navigationAgent.Velocity = newVelocity;
+		else
+			OnVelocityComputed(newVelocity);
+
+		MoveAndSlide();
+		PlayAnimation(direction);
+		_lastDirection = direction;
+	}
+
+	public void OnVelocityComputed(Vector2 safeVelocity)
+	{
+		Velocity = safeVelocity;
 	}
 
 	private void PlayAnimation(Vector2 direction, float animationSpeed = 1.0f)

@@ -41,7 +41,7 @@ public partial class InventoryMenu : PanelContainer
 		SignalBus.PlayerBoughtCasinoGame -= OnPlayerBoughtCasinoGame;
 		SignalBus.PlayerHiredWorker -= OnPlayerHiredWorker;
 		SignalBus.PlayerBoughtStatue -= OnPlayerBoughtStatue;
-		SignalBus.NewDay += OnNewDay;
+		SignalBus.NewDay -= OnNewDay;
 	}
 
 	private void OnInventoryButtonPressed(bool open)

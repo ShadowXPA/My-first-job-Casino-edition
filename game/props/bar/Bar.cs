@@ -1,52 +1,8 @@
 using Godot;
-using ProjectGJ.Characters.Customer;
-using ProjectGJ.Characters.Worker;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using ProjectGJ.Scripts;
 
 namespace ProjectGJ.Props.Bar;
 
-public partial class Bar : StaticBody2D
+public partial class Bar : WorkerStation
 {
-	public Node2D? BartenderSpawner { get; private set; }
-	public Node? CustomerSeats { get; private set; }
-	public Worker? Worker { get; private set; }
-	public Dictionary<Customer, Node2D> Customers { get; private set; } = [];
-	public bool HasEmptySeats => CustomerSeats?.GetChildren().Any(node => node.GetChildCount() == 0) ?? false;
-
-	public override void _Ready()
-	{
-		BartenderSpawner = GetNode<Node2D>("%BartenderSpawner");
-		CustomerSeats = GetNode<Node>("%CustomerSeats");
-	}
-
-	public void SetWorker(Worker worker)
-	{
-		Worker = worker;
-	}
-
-	public Node2D? TryOccupyTable(Customer customer)
-	{
-		if (CustomerSeats is null || Customers.ContainsKey(customer) || !HasEmptySeats) return null;
-
-		var emptySeats = CustomerSeats.GetChildren()
-							.Cast<Node2D>()
-							.Where(node => node.GetChildCount() == 0)
-							.ToList();
-		var numberOfEmptySeats = emptySeats.Count;
-		var seat = emptySeats[GD.RandRange(0, numberOfEmptySeats - 1)];
-
-		seat.AddChild(customer);
-		Customers.Add(customer, seat);
-		return seat;
-	}
-
-	public void LeaveTable(Customer customer)
-	{
-		if (CustomerSeats is null || !Customers.TryGetValue(customer, out Node2D? seat)) return;
-
-		Customers.Remove(customer);
-		seat.RemoveChild(customer);
-	}
 }

@@ -11,7 +11,6 @@ public class GameData
     public int ElapsedTime { get; set; }
     public int Money { get; set; } = 10000;
     public StatueItem? Statue { get; set; }
-    public float BaseWinRate { get; set; } = 0.25f;
     public Inventory Inventory { get; set; } = new();
     public List<Transaction> Transactions { get; } = [];
 }

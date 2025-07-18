@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using ProjectGJ.Props.Slots;
 using ProjectGJ.Scripts.Items;
 
 namespace ProjectGJ.Scripts;
@@ -15,6 +16,8 @@ public static class SignalBus
     public static void BroadcastPlayerStoppedInteracting(List<Button> actions) => PlayerStoppedInteracting?.Invoke(actions);
     public static Action<Transaction>? PlayerMoneyTransaction;
     public static void BroadcastPlayerMoneyTransaction(Transaction transaction) => PlayerMoneyTransaction?.Invoke(transaction);
+    public static Action<Transaction>? TransactionComplete;
+    public static void BroadcastTransactionComplete(Transaction transaction) => TransactionComplete?.Invoke(transaction);
     // public static Action<Transaction>? CustomerMoneyTransaction;
     public static Action<StatueItem>? PlayerSelectedStatue;
     public static void BroadcastPlayerSelectedStatue(StatueItem item) => PlayerSelectedStatue?.Invoke(item);
@@ -46,4 +49,8 @@ public static class SignalBus
     public static void BroadcastPlayerFiredWorker(WorkerItem worker) => PlayerFiredWorker?.Invoke(worker);
     public static Action? NewDay;
     public static void BroadcastNewDay() => NewDay?.Invoke();
+    public static Action? RefreshShops;
+    public static void BroadcastRefreshShops() => RefreshShops?.Invoke();
+    public static Action<Slots>? PlayerRepairingSlots;
+    public static void BroadcastPlayerRepairingSlots(Slots slots) => PlayerRepairingSlots?.Invoke(slots);
 }

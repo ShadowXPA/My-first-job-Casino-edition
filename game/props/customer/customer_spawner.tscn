@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://d14a7jpeo5jvc"]
+
+[ext_resource type="Script" uid="uid://v4kjvryyrvdu" path="res://props/customer/CustomerSpawner.cs" id="1_k0dso"]
+[ext_resource type="Texture2D" uid="uid://butoegopmfvkj" path="res://icon.svg" id="1_xxsyd"]
+
+[node name="CustomerSpawner" type="Node2D" groups=["customer_spawner"]]
+script = ExtResource("1_k0dso")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 0, 1, 1)
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("1_xxsyd")

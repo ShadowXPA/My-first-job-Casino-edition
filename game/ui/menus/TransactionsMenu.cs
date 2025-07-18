@@ -20,13 +20,13 @@ public partial class TransactionsMenu : PanelContainer
 		_exitButton.Pressed += () => OnTransactionsButtonPressed(false);
 
 		SignalBus.TransactionsMenuButtonPressed += OnTransactionsButtonPressed;
-		SignalBus.PlayerMoneyTransaction += OnTransaction;
+		SignalBus.TransactionComplete += OnTransactionComplete;
 	}
 
 	public override void _ExitTree()
 	{
 		SignalBus.TransactionsMenuButtonPressed -= OnTransactionsButtonPressed;
-		SignalBus.PlayerMoneyTransaction -= OnTransaction;
+		SignalBus.TransactionComplete -= OnTransactionComplete;
 	}
 
 	private void OnTransactionsButtonPressed(bool open)
@@ -34,10 +34,8 @@ public partial class TransactionsMenu : PanelContainer
 		Visible = open;
 	}
 
-	private void OnTransaction(Transaction transaction)
+	private void OnTransactionComplete(Transaction transaction)
 	{
-		GD.PrintS(transaction);
-
 		if (TransactionItem is null || _transactionsList is null) return;
 
 		var transactionItem = TransactionItem.Instantiate<TransactionItem>();

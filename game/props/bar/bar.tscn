@@ -12,7 +12,7 @@ texture = ExtResource("1_2sdj4")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(2, -4, 13, -11, 31, -16, 47, -16, 47, -44, 18, -42, -6, -28, -16, -12, -16, 5, -10, 28, 1, 39, 28, 48, 48, 48, 48, 19, 29, 19, 11, 14, 2, 6)
 
-[node name="BartenderSpawner" type="Node2D" parent="."]
+[node name="WorkerSpawner" type="Node2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(15, 0)
 

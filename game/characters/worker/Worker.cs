@@ -1,4 +1,5 @@
 using Godot;
+using ProjectGJ.Scripts.Items;
 using System;
 using System.Text;
 
@@ -6,29 +7,28 @@ namespace ProjectGJ.Characters.Worker;
 
 public partial class Worker : CharacterBody2D
 {
-
-	[ExportGroup("Movement")]
-	[Export]
-	public float Speed { get; set; } = 200.0f;
-
-	// TODO: type of worker
+	public WorkerItem? WorkerItem { get; private set; }
+	public Label? WorkerName { get; private set; }
 
 	private AnimatedSprite2D? _animatedSprite;
 	private Vector2? _lastDirection;
 
 	public override void _Ready()
 	{
+		_lastDirection = Vector2.Down;
 		_animatedSprite = GetNode<AnimatedSprite2D>("%Sprite");
+		WorkerName = GetNode<Label>("%Name");
 	}
 
-	public override void _PhysicsProcess(double delta)
+	public void SetWorker(WorkerItem workerItem)
 	{
-		var direction = Vector2.Right;
-		// Velocity = direction * Speed;
-		// MoveAndSlide();
+		WorkerItem = workerItem;
+		SetCharacter(workerItem.Resource!);
 
-		PlayAnimation(direction);
-		_lastDirection = direction;
+		if (WorkerName is not null)
+		{
+			WorkerName.Text = workerItem.Name;
+		}
 	}
 
 	public void SetCharacter(string resource)
@@ -38,7 +38,7 @@ public partial class Worker : CharacterBody2D
 		_animatedSprite.SpriteFrames = GD.Load<SpriteFrames>(resource);
 	}
 
-	private void PlayAnimation(Vector2 direction, float animationSpeed = 1.0f)
+	public void PlayAnimation(Vector2 direction, float animationSpeed = 1.0f)
 	{
 		if (_animatedSprite is null) return;
 

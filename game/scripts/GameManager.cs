@@ -1,10 +1,12 @@
 using Godot;
+using ProjectGJ.Characters.Customer;
 using ProjectGJ.Characters.Player;
+using ProjectGJ.Characters.Worker;
+using ProjectGJ.Props.Security;
+using ProjectGJ.Props.Slots;
 using ProjectGJ.Scripts.Items;
 using ProjectGJ.Ui.Hud;
-using ProjectGJ.Ui.Menus;
-using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectGJ.Scripts;
 
@@ -20,6 +22,10 @@ public partial class GameManager : Node
     public Node? WorkerContainer;
     [Export]
     public Hud? Hud;
+    [Export]
+    public PackedScene? WorkerScene;
+    [Export]
+    public PackedScene? CustomerScene;
 
     private GameData _gameData = new();
 
@@ -42,6 +48,7 @@ public partial class GameManager : Node
         SignalBus.PlayerBoughtStatue += OnPlayerBoughtStatue;
         SignalBus.PlayerSoldCasinoGame += OnPlayerSoldCasinoGame;
         SignalBus.PlayerFiredWorker += OnPlayerFiredWorker;
+        SignalBus.PlayerRepairingSlots += OnPlayerRepairingSlots;
 
         Player?.SetCharacterResource(_gameData.CharacterResource);
     }
@@ -62,6 +69,7 @@ public partial class GameManager : Node
         SignalBus.PlayerBoughtStatue -= OnPlayerBoughtStatue;
         SignalBus.PlayerSoldCasinoGame -= OnPlayerSoldCasinoGame;
         SignalBus.PlayerFiredWorker -= OnPlayerFiredWorker;
+        SignalBus.PlayerRepairingSlots -= OnPlayerRepairingSlots;
     }
 
     public void LoadGame()
@@ -77,45 +85,95 @@ public partial class GameManager : Node
         _gameData.ElapsedTime++;
         SignalBus.BroadcastGameTimeChanged(_gameData.ElapsedTime);
 
-        // TODO: every hour check for broken machines?
-        // TODO: every hour try to spawn more customers?
-        var (hour, minutes) = Utils.GetHoursAndMinutes(_gameData.ElapsedTime);
-        if (hour % 24 == 0 && minutes % 60 == 0)
+        var machineBreakMultiplier = _gameData.Inventory.Statues
+            .Where(statue => statue.ChanceMachineBreakMultiplier is not null)
+            .Aggregate(1.0f, (previousValue, statue) => previousValue * (float)statue.ChanceMachineBreakMultiplier!);
+        var machineBreakRate = Constants.SLOT_MACHINE_BREAK_RATE * machineBreakMultiplier;
+
+        if (GD.Randf() < machineBreakRate)
         {
-            foreach (var worker in _gameData.Inventory.Workers)
+            var brokenSlots = (Slots)GetTree().GetNodesInGroup("slots").PickRandom();
+            brokenSlots.Break();
+        }
+
+        var (hour, minutes) = Utils.GetHoursAndMinutes(_gameData.ElapsedTime);
+        var days = Utils.GetDays(_gameData.ElapsedTime);
+
+        if (minutes % 15 == 0)
+        {
+            // TODO: Try spawning customers
+            if (CustomerScene is not null && CustomerContainer is not null && CustomerContainer.GetChildCount() < Constants.MAX_NUMBER_CUSTOMERS)
             {
-                worker.DaysWorked++;
+                var customerItem = Utils.GenerateRandomCustomer(_gameData.CharacterResource);
+                var customer = CustomerScene.Instantiate<Customer>();
+                CustomerContainer.AddChild(customer);
+                customer.SetCustomerItem(customerItem);
+                customer.GlobalPosition = ((Node2D)GetTree().GetNodesInGroup("customer_spawner").PickRandom()).GlobalPosition;
+                customer.NextActivity();
+            }
+        }
+
+        if (minutes % 60 == 0)
+        {
+            if (hour % 3 == 0)
+            {
+                SignalBus.BroadcastRefreshShops();
             }
 
-            SignalBus.BroadcastNewDay();
-
-            // TODO: every 30 days remove money from salary, maintenance fees (TAXES... yes...)?
-            var days = Utils.GetDays(_gameData.ElapsedTime);
-            if (days % 30 == 0)
+            if (hour % 24 == 0)
             {
-                var salaries = 0;
-
                 foreach (var worker in _gameData.Inventory.Workers)
                 {
-                    salaries += Mathf.FloorToInt(worker.FinalPrice / 30 * Mathf.Min(worker.DaysWorked, 30));
+                    worker.DaysWorked++;
                 }
 
-                var expenses = -salaries;
+                SignalBus.BroadcastNewDay();
 
-                var transaction = new Transaction();
-                transaction.AmountBeforeTransaction = _gameData.Money;
-                _gameData.Money += expenses;
-                transaction.AmountAfterTransaction = _gameData.Money;
-                transaction.TransactionAmount = expenses;
-                SignalBus.BroadcastPlayerMoneyTransaction(transaction);
-                SignalBus.BroadcastNotifyPlayer("30 days have passed, you have paid your expenses.");
+                if (days % 30 == 0)
+                {
+                    var salaries = 0;
+
+                    foreach (var worker in _gameData.Inventory.Workers)
+                    {
+                        salaries += Mathf.FloorToInt(worker.FinalPrice / 30 * Mathf.Min(worker.DaysWorked, 30));
+                    }
+
+                    var casinoRent = Constants.CASINO_RENT;
+                    var maintenanceFees = Constants.MAINTENANCE_FEES;
+
+                    var payments = salaries + casinoRent + maintenanceFees;
+
+                    var lastTransactions = _gameData.Transactions.Where(transaction => transaction.Day > (days - 30));
+                    var profits = lastTransactions.Where(transaction => transaction.TransactionAmount > 0)
+                        .Sum(transaction => transaction.TransactionAmount);
+                    var losses = lastTransactions.Where(transaction => transaction.TransactionAmount < 0)
+                        .Sum(transaction => transaction.TransactionAmount) + payments;
+
+                    var realProfit = profits - losses;
+                    var taxes = realProfit <= 0 ? 0 : Mathf.FloorToInt(realProfit * Constants.TAX_RATE);
+
+                    var expenses = -(payments + taxes);
+
+                    var transaction = new Transaction()
+                    {
+                        Description = "Monthly expenses including: salaries, taxes, rent, other fees",
+                    };
+                    transaction.AmountBeforeTransaction = _gameData.Money;
+                    _gameData.Money += expenses;
+                    transaction.AmountAfterTransaction = _gameData.Money;
+                    transaction.TransactionAmount = expenses;
+                    SignalBus.BroadcastPlayerMoneyTransaction(transaction);
+                    SignalBus.BroadcastNotifyPlayer("30 days have passed, you have paid your expenses.");
+                }
             }
         }
     }
 
     private void OnPlayerMoneyTransaction(Transaction transaction)
     {
+        transaction.Day = Utils.GetDays(_gameData.ElapsedTime);
         _gameData.Transactions.Add(transaction);
+        SignalBus.BroadcastTransactionComplete(transaction);
     }
 
     private void OnPlayerBuyingCasinoGame(CasinoGameItem casinoGame)
@@ -126,7 +184,10 @@ public partial class GameManager : Node
             return;
         }
 
-        var transaction = new Transaction();
+        var transaction = new Transaction()
+        {
+            Description = $"Bought casino game: {casinoGame.Name}",
+        };
 
         transaction.AmountBeforeTransaction = _gameData.Money;
         _gameData.Money += -casinoGame.FinalPrice;
@@ -144,10 +205,75 @@ public partial class GameManager : Node
 
     private void OnPlayerHiringWorker(WorkerItem worker)
     {
+        if (WorkerScene is null || WorkerContainer is null) return;
+
         if (_gameData.Money < worker.FinalPrice)
         {
             SignalBus.BroadcastNotifyPlayer($"You cannot afford to hire this person: {worker.Name}");
             return;
+        }
+
+        switch (worker.Profession)
+        {
+            case Profession.Security:
+                {
+                    var guardPosts = GetTree().GetNodesInGroup("security").Cast<GuardPost>();
+                    var emptyGuardPosts = guardPosts.Where(guardPost => guardPost.Worker is null).ToList();
+
+                    if (emptyGuardPosts.Count == 0)
+                    {
+                        SignalBus.BroadcastNotifyPlayer($"You cannot hire more {worker.Profession} workers");
+                        return;
+                    }
+
+                    var guardPost = emptyGuardPosts[GD.RandRange(0, emptyGuardPosts.Count - 1)];
+                    var staff = WorkerScene.Instantiate<Worker>();
+                    WorkerContainer.AddChild(staff);
+                    staff.SetWorker(worker);
+                    guardPost.SetWorker(staff);
+                    staff.GlobalPosition = guardPost.GlobalPosition;
+                    break;
+                }
+            case Profession.Bartender:
+                {
+                    var bars = GetTree().GetNodesInGroup("bar").Cast<WorkerStation>();
+                    var emptyBars = bars.Where(bar => bar.Worker is null).ToList();
+
+                    if (emptyBars.Count == 0)
+                    {
+                        SignalBus.BroadcastNotifyPlayer($"You cannot hire more {worker.Profession} workers");
+                        return;
+                    }
+
+                    var bar = emptyBars[GD.RandRange(0, emptyBars.Count - 1)];
+                    var staff = WorkerScene.Instantiate<Worker>();
+                    WorkerContainer.AddChild(staff);
+                    staff.SetWorker(worker);
+                    bar.SetWorker(staff);
+                    staff.GlobalPosition = bar.WorkerSpawner!.GlobalPosition;
+                    break;
+                }
+            case Profession.Dealer:
+                {
+                    var tables = GetTree().GetNodesInGroup("dealer").Cast<WorkerStation>();
+                    var emptyTables = tables.Where(table => table.Worker is null).ToList();
+
+                    if (emptyTables.Count == 0)
+                    {
+                        SignalBus.BroadcastNotifyPlayer($"You cannot hire more {worker.Profession} workers");
+                        return;
+                    }
+
+                    var table = emptyTables[GD.RandRange(0, emptyTables.Count - 1)];
+                    var staff = WorkerScene.Instantiate<Worker>();
+                    WorkerContainer.AddChild(staff);
+                    staff.SetWorker(worker);
+                    table.SetWorker(staff);
+                    staff.GlobalPosition = table.WorkerSpawner!.GlobalPosition;
+                    break;
+                }
+            default:
+                return;
         }
 
         SignalBus.BroadcastPlayerHiredWorker(worker);
@@ -166,7 +292,10 @@ public partial class GameManager : Node
             return;
         }
 
-        var transaction = new Transaction();
+        var transaction = new Transaction()
+        {
+            Description = $"Bought statue: {statue.Name}",
+        };
 
         transaction.AmountBeforeTransaction = _gameData.Money;
         _gameData.Money += -statue.FinalPrice;
@@ -189,7 +318,10 @@ public partial class GameManager : Node
 
         _gameData.Inventory.CasinoGames.Remove(casinoGame);
 
-        var transaction = new Transaction();
+        var transaction = new Transaction()
+        {
+            Description = $"Sold casino game: {casinoGame.Name}",
+        };
 
         transaction.AmountBeforeTransaction = _gameData.Money;
         _gameData.Money += sellValue;
@@ -203,15 +335,115 @@ public partial class GameManager : Node
     {
         var sellValue = -Mathf.FloorToInt(worker.FinalPrice / 30 * (worker.DaysWorked % 30));
 
+        switch (worker.Profession)
+        {
+            case Profession.Security:
+                {
+                    var guardPosts = GetTree().GetNodesInGroup("security").Cast<GuardPost>();
+                    var occupiedGuardPosts = guardPosts.Where(guardPost => guardPost.Worker is not null).ToList();
+
+                    if (occupiedGuardPosts.Count == 0)
+                    {
+                        return;
+                    }
+
+                    foreach (var guardPost in occupiedGuardPosts)
+                    {
+                        if (guardPost.Worker?.WorkerItem == worker)
+                        {
+                            var staff = guardPost.Worker;
+                            guardPost.SetWorker(null);
+                            staff.QueueFree();
+                            break;
+                        }
+                    }
+                    break;
+                }
+            case Profession.Bartender:
+                {
+                    var bars = GetTree().GetNodesInGroup("bar").Cast<WorkerStation>();
+                    var occupiedBars = bars.Where(bar => bar.Worker is not null).ToList();
+
+                    if (occupiedBars.Count == 0)
+                    {
+                        return;
+                    }
+
+                    foreach (var bar in occupiedBars)
+                    {
+                        if (bar.Worker?.WorkerItem == worker)
+                        {
+                            var staff = bar.Worker;
+                            bar.SetWorker(null);
+                            staff.QueueFree();
+                            break;
+                        }
+                    }
+                    break;
+                }
+            case Profession.Dealer:
+                {
+                    var tables = GetTree().GetNodesInGroup("dealer").Cast<WorkerStation>();
+                    var occupiedTables = tables.Where(bar => bar.Worker is not null).ToList();
+
+                    if (occupiedTables.Count == 0)
+                    {
+                        return;
+                    }
+
+                    foreach (var table in occupiedTables)
+                    {
+                        if (table.Worker?.WorkerItem == worker)
+                        {
+                            var staff = table.Worker;
+                            table.SetWorker(null);
+                            staff.QueueFree();
+                            break;
+                        }
+                    }
+                    break;
+                }
+            default:
+                return;
+        }
+
         worker.Station?.SetWorker(null);
         _gameData.Inventory.Workers.Remove(worker);
 
-        var transaction = new Transaction();
+        var transaction = new Transaction()
+        {
+            Description = $"Fired worker: {worker.Name}, after having worked for: {worker.DaysWorked} days",
+        };
 
         transaction.AmountBeforeTransaction = _gameData.Money;
         _gameData.Money += sellValue;
         transaction.AmountAfterTransaction = _gameData.Money;
         transaction.TransactionAmount = sellValue;
+
+        SignalBus.BroadcastPlayerMoneyTransaction(transaction);
+    }
+
+    private void OnPlayerRepairingSlots(Slots slots)
+    {
+        var repairCost = Constants.SLOT_MACHINE_REPAIR_FEE;
+
+        if (_gameData.Money < repairCost)
+        {
+            SignalBus.BroadcastNotifyPlayer("You cannot afford to repair this slot machine");
+            return;
+        }
+
+        var transaction = new Transaction()
+        {
+            Description = "Slot machine repair fee"
+        };
+
+        transaction.AmountBeforeTransaction = _gameData.Money;
+        _gameData.Money -= repairCost;
+        transaction.AmountAfterTransaction = _gameData.Money;
+        transaction.TransactionAmount = -repairCost;
+
+        slots.Repair();
 
         SignalBus.BroadcastPlayerMoneyTransaction(transaction);
     }

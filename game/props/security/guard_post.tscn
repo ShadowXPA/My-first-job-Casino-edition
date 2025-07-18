@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5fawjowxo3wp"]
+
+[ext_resource type="Script" uid="uid://bvnu31jp0u5cp" path="res://props/security/GuardPost.cs" id="1_jr4ou"]
+[ext_resource type="Texture2D" uid="uid://butoegopmfvkj" path="res://icon.svg" id="1_r2qh8"]
+
+[node name="GuardPost" type="Node2D" groups=["security"]]
+script = ExtResource("1_jr4ou")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("1_r2qh8")

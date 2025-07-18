@@ -25,7 +25,7 @@ public partial class Hud : Control
 		SignalBus.PlayerInteracting += OnPlayerInteracting;
 		SignalBus.PlayerStoppedInteracting += OnPlayerStoppedInteracting;
 		SignalBus.GameTimeChanged += OnGameTimeChanged;
-		SignalBus.PlayerMoneyTransaction += OnPlayerMoneyTransaction;
+		SignalBus.TransactionComplete += OnTransactionComplete;
 		SignalBus.NotifyPlayer += OnNotifyPlayer;
 	}
 
@@ -34,7 +34,7 @@ public partial class Hud : Control
 		SignalBus.PlayerInteracting -= OnPlayerInteracting;
 		SignalBus.PlayerStoppedInteracting -= OnPlayerStoppedInteracting;
 		SignalBus.GameTimeChanged -= OnGameTimeChanged;
-		SignalBus.PlayerMoneyTransaction -= OnPlayerMoneyTransaction;
+		SignalBus.TransactionComplete -= OnTransactionComplete;
 		SignalBus.NotifyPlayer -= OnNotifyPlayer;
 	}
 
@@ -116,7 +116,7 @@ public partial class Hud : Control
 		SetTimeAndDay(time);
 	}
 
-	private void OnPlayerMoneyTransaction(Transaction transaction)
+	private void OnTransactionComplete(Transaction transaction)
 	{
 		SetMoney(transaction.AmountAfterTransaction);
 		AddTransaction(transaction.TransactionAmount);

@@ -43,7 +43,7 @@ public partial class ShopMenu : VBoxContainer
 		SignalBus.ShopMenuButtonPressed += OnShopPressed;
 		SignalBus.PlayerHiredWorker += OnWorkerHired;
 		SignalBus.PlayerBoughtStatue += OnStatueBought;
-		SignalBus.NewDay += OnNewDay;
+		SignalBus.RefreshShops += OnRefreshShops;
 	}
 
 	public override void _ExitTree()
@@ -51,7 +51,7 @@ public partial class ShopMenu : VBoxContainer
 		SignalBus.ShopMenuButtonPressed -= OnShopPressed;
 		SignalBus.PlayerHiredWorker -= OnWorkerHired;
 		SignalBus.PlayerBoughtStatue -= OnStatueBought;
-		SignalBus.NewDay -= OnNewDay;
+		SignalBus.RefreshShops -= OnRefreshShops;
 	}
 
 	public void AddCasinoGames(List<CasinoGameItem> items)
@@ -169,7 +169,7 @@ public partial class ShopMenu : VBoxContainer
 			ApplyPriceMultiplier((float)statue.ShopPricesMultiplier);
 	}
 
-	private void OnNewDay()
+	private void OnRefreshShops()
 	{
 		if (_hireList is null) return;
 

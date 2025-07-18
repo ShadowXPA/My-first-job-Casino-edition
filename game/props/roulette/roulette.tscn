@@ -108,7 +108,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="Roulette" type="StaticBody2D" groups=["roulette"]]
+[node name="Roulette" type="StaticBody2D" groups=["dealer", "roulette"]]
 script = ExtResource("1_fkqp3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -125,7 +125,7 @@ autoplay = "default"
 position = Vector2(8, -6)
 polygon = PackedVector2Array(-56, -30, 56, -30, 56, 30, 24, 30, 24, 22, -56, 22)
 
-[node name="DealerSpawner" type="Node2D" parent="."]
+[node name="WorkerSpawner" type="Node2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(0, -45)
 
