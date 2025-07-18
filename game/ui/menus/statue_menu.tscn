@@ -25,7 +25,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "This is only visual, all the statue buffs are permanent and always applied."
+text = "This is purely visual, all the statue buffs are permanent and always applied."
 
 [node name="Exit" type="Button" parent="MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -34,6 +34,7 @@ layout_mode = 2
 text = "x"
 
 [node name="TabContainer" type="TabContainer" parent="."]
+custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0

@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://u4a45xhi4qny"]
+
+[ext_resource type="Texture2D" uid="uid://djwresu6f8goj" path="res://assets/sprites/casino/bar.png" id="1_2sdj4"]
+[ext_resource type="Script" uid="uid://ydlmynol5eyv" path="res://props/bar/Bar.cs" id="1_lalba"]
+
+[node name="Bar" type="StaticBody2D" groups=["bar"]]
+script = ExtResource("1_lalba")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_2sdj4")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(2, -4, 13, -11, 31, -16, 47, -16, 47, -44, 18, -42, -6, -28, -16, -12, -16, 5, -10, 28, 1, 39, 28, 48, 48, 48, 48, 19, 29, 19, 11, 14, 2, 6)
+
+[node name="BartenderSpawner" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(15, 0)
+
+[node name="CustomerSeats" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="Seat1" type="Node2D" parent="CustomerSeats"]
+position = Vector2(-8, -42)
+
+[node name="Seat2" type="Node2D" parent="CustomerSeats"]
+position = Vector2(-24, -27)
+
+[node name="Seat3" type="Node2D" parent="CustomerSeats"]
+position = Vector2(-32, -7)
+
+[node name="Seat4" type="Node2D" parent="CustomerSeats"]
+position = Vector2(-32, 16)
+
+[node name="Seat5" type="Node2D" parent="CustomerSeats"]
+position = Vector2(-24, 36)
+
+[node name="Seat6" type="Node2D" parent="CustomerSeats"]
+position = Vector2(-8, 52)

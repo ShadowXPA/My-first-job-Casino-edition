@@ -88,28 +88,28 @@ public partial class GameManager : Node
             }
 
             SignalBus.BroadcastNewDay();
-        }
 
-        // TODO: every 30 days remove money from salary, maintenance fees?
-        var days = Utils.GetDays(_gameData.ElapsedTime);
-        if (days % 30 == 0 && hour % 24 == 0 && minutes % 60 == 0)
-        {
-            var salaries = 0;
-
-            foreach (var worker in _gameData.Inventory.Workers)
+            // TODO: every 30 days remove money from salary, maintenance fees (TAXES... yes...)?
+            var days = Utils.GetDays(_gameData.ElapsedTime);
+            if (days % 30 == 0)
             {
-                salaries += Mathf.FloorToInt(worker.FinalPrice / 30 * Mathf.Min(worker.DaysWorked, 30));
+                var salaries = 0;
+
+                foreach (var worker in _gameData.Inventory.Workers)
+                {
+                    salaries += Mathf.FloorToInt(worker.FinalPrice / 30 * Mathf.Min(worker.DaysWorked, 30));
+                }
+
+                var expenses = -salaries;
+
+                var transaction = new Transaction();
+                transaction.AmountBeforeTransaction = _gameData.Money;
+                _gameData.Money += expenses;
+                transaction.AmountAfterTransaction = _gameData.Money;
+                transaction.TransactionAmount = expenses;
+                SignalBus.BroadcastPlayerMoneyTransaction(transaction);
+                SignalBus.BroadcastNotifyPlayer("30 days have passed, you have paid your expenses.");
             }
-
-            var expenses = -salaries;
-
-            var transaction = new Transaction();
-            transaction.AmountBeforeTransaction = _gameData.Money;
-            _gameData.Money += expenses;
-            transaction.AmountAfterTransaction = _gameData.Money;
-            transaction.TransactionAmount = expenses;
-            SignalBus.BroadcastPlayerMoneyTransaction(transaction);
-            SignalBus.BroadcastNotifyPlayer("30 days have passed, you have paid your expenses.");
         }
     }
 

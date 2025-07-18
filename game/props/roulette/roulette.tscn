@@ -1,0 +1,148 @@
+[gd_scene load_steps=18 format=3 uid="uid://bthkedaeavgva"]
+
+[ext_resource type="Script" uid="uid://ijcpiadxbkxa" path="res://props/roulette/Roulette.cs" id="1_fkqp3"]
+[ext_resource type="Texture2D" uid="uid://bo6uj2sgm0wee" path="res://assets/sprites/casino/roulette.png" id="1_rw2qc"]
+[ext_resource type="Texture2D" uid="uid://d24ovru5vitva" path="res://assets/sprites/casino/roulette_wheel.png" id="2_f1cr1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fkqp3"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tx0tj"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20cd5"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ppif"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mta18"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eqoy2"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0a8rs"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_owmo4"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cpsdl"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mslfd"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(256, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4jji"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(288, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aohhs"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(320, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5pn6d"]
+atlas = ExtResource("2_f1cr1")
+region = Rect2(352, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bhurt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fkqp3")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tx0tj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20cd5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ppif")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mta18")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eqoy2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0a8rs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_owmo4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cpsdl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mslfd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e4jji")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aohhs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5pn6d")
+}],
+"loop": true,
+"name": &"rolling",
+"speed": 10.0
+}]
+
+[node name="Roulette" type="StaticBody2D" groups=["roulette"]]
+script = ExtResource("1_fkqp3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_rw2qc")
+
+[node name="RouletteWheel" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(46, -18)
+sprite_frames = SubResource("SpriteFrames_bhurt")
+animation = &"rolling"
+autoplay = "default"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(8, -6)
+polygon = PackedVector2Array(-56, -30, 56, -30, 56, 30, 24, 30, 24, 22, -56, 22)
+
+[node name="DealerSpawner" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -45)
+
+[node name="CustomerSeats" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="Seat1" type="Node2D" parent="CustomerSeats"]
+position = Vector2(-58, -20)
+
+[node name="Seat2" type="Node2D" parent="CustomerSeats"]
+position = Vector2(-58, 20)
+
+[node name="Seat3" type="Node2D" parent="CustomerSeats"]
+position = Vector2(-40, 26)
+
+[node name="Seat4" type="Node2D" parent="CustomerSeats"]
+position = Vector2(-8, 26)
+
+[node name="Seat5" type="Node2D" parent="CustomerSeats"]
+position = Vector2(23, 26)

@@ -28,6 +28,7 @@ size_flags_horizontal = 8
 text = "x"
 
 [node name="TabContainer" type="TabContainer" parent="."]
+custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0

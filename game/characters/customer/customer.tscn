@@ -18,3 +18,11 @@ offset = Vector2(0, -12)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_01pos")
+
+[node name="NavigationAgent" type="NavigationAgent2D" parent="."]
+unique_name_in_owner = true
+path_desired_distance = 1.5
+target_desired_distance = 20.0
+path_postprocessing = 1
+avoidance_enabled = true
+debug_enabled = true

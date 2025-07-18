@@ -27,6 +27,13 @@ mouse_cursor/custom_image="uid://bb8c3mfb5kvw"
 
 project/assembly_name="ProjectGJ"
 
+[global_group]
+
+slots=""
+roulette=""
+poker=""
+bar=""
+
 [gui]
 
 theme/custom="uid://gv12lx78qjyc"

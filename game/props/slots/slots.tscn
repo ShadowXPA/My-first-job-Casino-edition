@@ -333,17 +333,17 @@ animations = [{
 size = Vector2(16, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_swsnf"]
-radius = 32.0
+radius = 24.0
 
-[node name="Slots" type="StaticBody2D"]
+[node name="Slots" type="StaticBody2D" groups=["slots"]]
 script = ExtResource("1_ienl1")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(1.5, -14)
 sprite_frames = SubResource("SpriteFrames_mwhlb")
-animation = &"lose"
-autoplay = "off"
+animation = &"on"
+autoplay = "on"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_nafwu")
