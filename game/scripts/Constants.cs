@@ -11,18 +11,18 @@ public static class Constants
     public readonly static float TAX_RATE = 0.15f;
     public readonly static int CASINO_RENT = 4500;
     public readonly static int MAINTENANCE_FEES = 750;
-    public readonly static float SLOT_MACHINE_BREAK_RATE = 1.001f;
+    public readonly static float SLOT_MACHINE_BREAK_RATE = 0.001f;
     public readonly static int SLOT_MACHINE_REPAIR_FEE = 150;
     public readonly static float RANDOM_GENDER_RATE = 0.5f;
     public readonly static float RANDOM_PROFESSION_RATE = 0.33f;
-    public readonly static float RANDOM_CHEATER_RATE = 0.05f;
-    public readonly static float RANDOM_ADDICT_RATE = 0.1f;
-
+    public readonly static float RANDOM_CHEATER_RATE = 0.15f;
+    public readonly static float RANDOM_ADDICT_RATE = 0.3f;
+    public readonly static float SECURITY_MULTIPLIER = 1.0f - 0.02f;
     public readonly static float CUSTOMER_BASE_WIN_RATE = 0.25f;
-
     public readonly static int MAX_NUMBER_CUSTOMERS = 10;
-
     public readonly static int MIN_ACTIVITY_TIME = 30;
+    public readonly static float MIN_GAMBLE_TIME = 1.0f;
+    public readonly static float MAX_GAMBLE_TIME = 3.0f;
 
     public static class CustomerBonusWinRate
     {

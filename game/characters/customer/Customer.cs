@@ -32,12 +32,14 @@ public partial class Customer : CharacterBody2D
 		CustomerName = GetNode<Label>("%Name");
 
 		_navigationAgent.VelocityComputed += OnVelocityComputed;
+		SignalBus.GameTimeChanged += OnTimeChanged;
 	}
 
 	public override void _ExitTree()
 	{
 		if (_navigationAgent is not null)
 			_navigationAgent.VelocityComputed -= OnVelocityComputed;
+		SignalBus.GameTimeChanged -= OnTimeChanged;
 	}
 
 	public void SetCustomerItem(CustomerItem customerItem)
@@ -128,6 +130,13 @@ public partial class Customer : CharacterBody2D
 		{
 			_lastDirection = GlobalPosition.DirectionTo(_target.GlobalPosition).ToCardinalDirection();
 			PlayAnimation(Vector2.Zero);
+
+			if (_target is Slots slots)
+			{
+				// TODO: make this better...
+				slots.Gamble();
+			}
+
 			_target = null;
 
 			if (_currentActivity is not null && _currentActivity.Activity == ActivityType.Home)
@@ -152,7 +161,7 @@ public partial class Customer : CharacterBody2D
 		_lastDirection = direction;
 	}
 
-	public void OnVelocityComputed(Vector2 safeVelocity)
+	private void OnVelocityComputed(Vector2 safeVelocity)
 	{
 		Velocity = safeVelocity;
 	}
@@ -195,5 +204,18 @@ public partial class Customer : CharacterBody2D
 
 		_animatedSprite.SpeedScale = animationSpeed;
 		_animatedSprite.Play(str.ToString());
+	}
+
+	private void OnTimeChanged(int time)
+	{
+		if (_currentActivity is not null && _currentActivity.Activity != ActivityType.Home && _target is null)
+		{
+			_currentActivity.TimeLeft--;
+
+			if (_currentActivity.TimeLeft == 0)
+			{
+				NextActivity();
+			}
+		}
 	}
 }

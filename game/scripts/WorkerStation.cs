@@ -10,14 +10,14 @@ public partial class WorkerStation : StaticBody2D
 {
 	public Node2D? WorkerSpawner { get; private set; }
     public Worker? Worker { get; private set; }
-    public Node? CustomerSeats { get; private set; }
+    public Node2D? CustomerSeats { get; private set; }
     public Dictionary<Customer, Node2D> Customers { get; private set; } = [];
     public bool HasEmptySeats => CustomerSeats?.GetChildren().Count != Customers.Count;
 
     public override void _Ready()
     {
 		WorkerSpawner = GetNode<Node2D>("%WorkerSpawner");
-        CustomerSeats = GetNode<Node>("%CustomerSeats");
+        CustomerSeats = GetNode<Node2D>("%CustomerSeats");
     }
 
     public void SetWorker(Worker? worker)

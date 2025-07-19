@@ -16,7 +16,7 @@ polygon = PackedVector2Array(0, 11, 32, 2, 45, -16, 47, -39, -47, -39, -45, -16,
 unique_name_in_owner = true
 position = Vector2(0, -48)
 
-[node name="CustomerSeats" type="Node" parent="."]
+[node name="CustomerSeats" type="Node2D" parent="."]
 unique_name_in_owner = true
 
 [node name="Seat1" type="Node2D" parent="CustomerSeats"]

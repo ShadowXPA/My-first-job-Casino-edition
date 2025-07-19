@@ -85,6 +85,9 @@ public partial class GameManager : Node
         _gameData.ElapsedTime++;
         SignalBus.BroadcastGameTimeChanged(_gameData.ElapsedTime);
 
+        var (hour, minutes) = Utils.GetHoursAndMinutes(_gameData.ElapsedTime);
+        var days = Utils.GetDays(_gameData.ElapsedTime);
+
         var machineBreakMultiplier = _gameData.Inventory.Statues
             .Where(statue => statue.ChanceMachineBreakMultiplier is not null)
             .Aggregate(1.0f, (previousValue, statue) => previousValue * (float)statue.ChanceMachineBreakMultiplier!);
@@ -96,15 +99,26 @@ public partial class GameManager : Node
             brokenSlots.Break();
         }
 
-        var (hour, minutes) = Utils.GetHoursAndMinutes(_gameData.ElapsedTime);
-        var days = Utils.GetDays(_gameData.ElapsedTime);
-
-        if (minutes % 15 == 0)
+        if (minutes % 5 == 0)
         {
-            // TODO: Try spawning customers
             if (CustomerScene is not null && CustomerContainer is not null && CustomerContainer.GetChildCount() < Constants.MAX_NUMBER_CUSTOMERS)
             {
-                var customerItem = Utils.GenerateRandomCustomer(_gameData.CharacterResource);
+                var cheaterMultiplier = _gameData.Inventory.Statues
+                    .Where(statue => statue.CustomerCheatersMultiplier is not null)
+                    .Aggregate(1.0f, (previousValue, statue) => previousValue * (float)statue.CustomerCheatersMultiplier!);
+                var securityMultiplier = _gameData.Inventory.Workers
+                    .Where(worker => worker.Profession == Profession.Security)
+                    .Aggregate(1.0f, (previous, worker) => previous * Constants.SECURITY_MULTIPLIER);
+                cheaterMultiplier *= securityMultiplier;
+                var addictMultiplier = _gameData.Inventory.Statues
+                    .Where(statue => statue.CustomerAddictsMultiplier is not null)
+                    .Aggregate(1.0f, (previousValue, statue) => previousValue * (float)statue.CustomerAddictsMultiplier!);
+                var averageTimeMultiplier = _gameData.Inventory.Statues
+                    .Where(statue => statue.CustomerAvgTimeSpentMultiplier is not null)
+                    .Aggregate(1.0f, (previousValue, statue) => previousValue * (float)statue.CustomerAvgTimeSpentMultiplier!);
+
+                var customerItem = Utils.GenerateRandomCustomer(_gameData.CharacterResource,
+                    cheaterMultiplier: cheaterMultiplier, addictMultiplier: addictMultiplier, averageTimeMultiplier: averageTimeMultiplier);
                 var customer = CustomerScene.Instantiate<Customer>();
                 CustomerContainer.AddChild(customer);
                 customer.SetCustomerItem(customerItem);

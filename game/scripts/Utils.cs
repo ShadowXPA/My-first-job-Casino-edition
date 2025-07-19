@@ -67,7 +67,7 @@ public static class Utils
         return $"{GameItems.Names[gender][GD.RandRange(0, GameItems.Names[gender].Count - 1)]} {GameItems.Surnames[GD.RandRange(0, GameItems.Surnames.Count - 1)]}";
     }
 
-    public static CustomerItem GenerateRandomCustomer(string playerResource, Gender? gender = null, CustomerType? customerType = null, float cheaterMultiplier = 1.0f, float addictMultiplier = 1.0f)
+    public static CustomerItem GenerateRandomCustomer(string playerResource, Gender? gender = null, CustomerType? customerType = null, float cheaterMultiplier = 1.0f, float addictMultiplier = 1.0f, float averageTimeMultiplier = 1.0f)
     {
         var genderRandom = GD.Randf();
         var customerTypeRandom = GD.Randf();
@@ -75,7 +75,7 @@ public static class Utils
         var addictRate = Constants.RANDOM_ADDICT_RATE * addictMultiplier;
         var g = gender ?? (genderRandom < Constants.RANDOM_GENDER_RATE ? Gender.Male : Gender.Female);
         var ct = customerType ?? (customerTypeRandom < cheaterRate ? CustomerType.Cheater : (customerTypeRandom < (cheaterRate + addictRate)) ? CustomerType.Addict : CustomerType.Normal);
-        var customerAvgTime = GenerateCustomerAverageTime(ct);
+        var customerAvgTime = GenerateCustomerAverageTime(ct, averageTimeMultiplier);
         var activities = GenerateCustomerActivities(customerAvgTime);
 
         return new CustomerItem()
@@ -99,13 +99,16 @@ public static class Utils
         };
     }
 
-    public static int GenerateCustomerAverageTime(CustomerType customerType)
+    public static int GenerateCustomerAverageTime(CustomerType customerType, float avgTimeMultiplier = 1.0f)
     {
         return customerType switch
         {
-            CustomerType.Normal => GD.RandRange(Constants.CustomerAverageTime.MIN_NORMAL, Constants.CustomerAverageTime.MAX_NORMAL),
-            CustomerType.Cheater => GD.RandRange(Constants.CustomerAverageTime.MIN_CHEATER, Constants.CustomerAverageTime.MAX_CHEATER),
-            CustomerType.Addict => GD.RandRange(Constants.CustomerAverageTime.MIN_ADDICT, Constants.CustomerAverageTime.MAX_ADDICT),
+            CustomerType.Normal => GD.RandRange(Mathf.FloorToInt(Constants.CustomerAverageTime.MIN_NORMAL * avgTimeMultiplier),
+                Mathf.FloorToInt(Constants.CustomerAverageTime.MAX_NORMAL * avgTimeMultiplier)),
+            CustomerType.Cheater => GD.RandRange(Mathf.FloorToInt(Constants.CustomerAverageTime.MIN_CHEATER * avgTimeMultiplier),
+                Mathf.FloorToInt(Constants.CustomerAverageTime.MAX_CHEATER * avgTimeMultiplier)),
+            CustomerType.Addict => GD.RandRange(Mathf.FloorToInt(Constants.CustomerAverageTime.MIN_ADDICT * avgTimeMultiplier),
+                Mathf.FloorToInt(Constants.CustomerAverageTime.MAX_ADDICT * avgTimeMultiplier)),
             _ => 0
         };
     }
