@@ -2,6 +2,7 @@ using Godot;
 using ProjectGJ.Characters.Customer;
 using ProjectGJ.Characters.Player;
 using ProjectGJ.Characters.Worker;
+using ProjectGJ.Props.Roulette;
 using ProjectGJ.Props.Security;
 using ProjectGJ.Props.Slots;
 using ProjectGJ.Scripts.Items;
@@ -49,6 +50,10 @@ public partial class GameManager : Node
         SignalBus.PlayerSoldCasinoGame += OnPlayerSoldCasinoGame;
         SignalBus.PlayerFiredWorker += OnPlayerFiredWorker;
         SignalBus.PlayerRepairingSlots += OnPlayerRepairingSlots;
+        SignalBus.CustomerGamblingSlots += OnCustomerGamblingSlots;
+        SignalBus.CustomerGamblingRoulette += OnCustomerGambling;
+        SignalBus.CustomerGamblingBlackjack += OnCustomerGambling;
+        SignalBus.CustomerDrinking += OnCustomerDrinking;
 
         Player?.SetCharacterResource(_gameData.CharacterResource);
     }
@@ -70,6 +75,10 @@ public partial class GameManager : Node
         SignalBus.PlayerSoldCasinoGame -= OnPlayerSoldCasinoGame;
         SignalBus.PlayerFiredWorker -= OnPlayerFiredWorker;
         SignalBus.PlayerRepairingSlots -= OnPlayerRepairingSlots;
+        SignalBus.CustomerGamblingSlots -= OnCustomerGamblingSlots;
+        SignalBus.CustomerGamblingRoulette -= OnCustomerGambling;
+        SignalBus.CustomerGamblingBlackjack -= OnCustomerGambling;
+        SignalBus.CustomerDrinking -= OnCustomerDrinking;
     }
 
     public void LoadGame()
@@ -460,5 +469,111 @@ public partial class GameManager : Node
         slots.Repair();
 
         SignalBus.BroadcastPlayerMoneyTransaction(transaction);
+    }
+
+    private void OnCustomerGamblingSlots(Slots slots, Customer customer)
+    {
+        var baseWinMultiplier = _gameData.Inventory.Statues
+                    .Where(statue => statue.CustomerBaseWinRateMultiplier is not null)
+                    .Aggregate(1.0f, (previousValue, statue) => previousValue * (float)statue.CustomerBaseWinRateMultiplier!);
+        var winChance = baseWinMultiplier * Constants.CUSTOMER_BASE_WIN_RATE + customer.CustomerItem!.BonusWinRate;
+        var winRandom = GD.Randf();
+        var moneyWonOrLost = GD.RandRange(Constants.MIN_MONEY_WON_OR_LOST, Constants.MAX_MONEY_WON_OR_LOST);
+
+        if (winRandom < winChance)
+        {
+            var transaction = new Transaction()
+            {
+                Description = $"Customer {customer.CustomerItem.Name} won the gamble at slots"
+            };
+
+            transaction.AmountBeforeTransaction = _gameData.Money;
+            _gameData.Money -= moneyWonOrLost;
+            transaction.AmountAfterTransaction = _gameData.Money;
+            transaction.TransactionAmount = -moneyWonOrLost;
+
+            SignalBus.BroadcastPlayerMoneyTransaction(transaction);
+
+            customer.AddTransaction(moneyWonOrLost);
+            slots.Win();
+        }
+        else
+        {
+            var transaction = new Transaction()
+            {
+                Description = $"Customer {customer.CustomerItem.Name} lost the gamble at slots"
+            };
+
+            transaction.AmountBeforeTransaction = _gameData.Money;
+            _gameData.Money += moneyWonOrLost;
+            transaction.AmountAfterTransaction = _gameData.Money;
+            transaction.TransactionAmount = moneyWonOrLost;
+
+            SignalBus.BroadcastPlayerMoneyTransaction(transaction);
+
+            customer.AddTransaction(-moneyWonOrLost);
+            slots.Lose();
+        }
+    }
+
+    private void OnCustomerDrinking(Customer customer)
+    {
+        var moneySpent = GD.RandRange(Constants.MIN_MONEY_WON_OR_LOST, Constants.MAX_MONEY_WON_OR_LOST);
+
+        var transaction = new Transaction()
+        {
+            Description = $"Customer {customer.CustomerItem!.Name} bought a drink at the bar"
+        };
+
+        transaction.AmountBeforeTransaction = _gameData.Money;
+        _gameData.Money += moneySpent;
+        transaction.AmountAfterTransaction = _gameData.Money;
+        transaction.TransactionAmount = moneySpent;
+
+        SignalBus.BroadcastPlayerMoneyTransaction(transaction);
+        customer.AddTransaction(-moneySpent);
+    }
+
+    private void OnCustomerGambling(Customer customer)
+    {
+        var baseWinMultiplier = _gameData.Inventory.Statues
+                    .Where(statue => statue.CustomerBaseWinRateMultiplier is not null)
+                    .Aggregate(1.0f, (previousValue, statue) => previousValue * (float)statue.CustomerBaseWinRateMultiplier!);
+        var winChance = baseWinMultiplier * Constants.CUSTOMER_BASE_WIN_RATE + customer.CustomerItem!.BonusWinRate;
+        var winRandom = GD.Randf();
+        var moneyWonOrLost = GD.RandRange(Constants.MIN_MONEY_WON_OR_LOST, Constants.MAX_MONEY_WON_OR_LOST);
+
+        if (winRandom < winChance)
+        {
+            var transaction = new Transaction()
+            {
+                Description = $"Customer {customer.CustomerItem.Name} won the gamble"
+            };
+
+            transaction.AmountBeforeTransaction = _gameData.Money;
+            _gameData.Money -= moneyWonOrLost;
+            transaction.AmountAfterTransaction = _gameData.Money;
+            transaction.TransactionAmount = -moneyWonOrLost;
+
+            SignalBus.BroadcastPlayerMoneyTransaction(transaction);
+
+            customer.AddTransaction(moneyWonOrLost);
+        }
+        else
+        {
+            var transaction = new Transaction()
+            {
+                Description = $"Customer {customer.CustomerItem.Name} lost the gamble"
+            };
+
+            transaction.AmountBeforeTransaction = _gameData.Money;
+            _gameData.Money += moneyWonOrLost;
+            transaction.AmountAfterTransaction = _gameData.Money;
+            transaction.TransactionAmount = moneyWonOrLost;
+
+            SignalBus.BroadcastPlayerMoneyTransaction(transaction);
+
+            customer.AddTransaction(-moneyWonOrLost);
+        }
     }
 }

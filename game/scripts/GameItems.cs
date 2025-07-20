@@ -20,10 +20,10 @@ public static class GameItems
             Resource = $"{Constants.ASSET_SPRITE_CASINO_BASE_PATH}/roulette.png",
         },
         new() {
-            Name = "Poker",
+            Name = "Blackjack",
             Description = "Requires a dealer",
             Price = 10000,
-            Resource = $"{Constants.ASSET_SPRITE_CASINO_BASE_PATH}/poker.png",
+            Resource = $"{Constants.ASSET_SPRITE_CASINO_BASE_PATH}/blackjack.png",
         },
     ];
 

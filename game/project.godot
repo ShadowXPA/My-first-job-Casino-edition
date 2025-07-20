@@ -31,12 +31,12 @@ project/assembly_name="ProjectGJ"
 
 slots=""
 roulette=""
-poker=""
 bar=""
 security=""
 dealer=""
 customer_spawner=""
 home=""
+blackjack=""
 
 [gui]
 

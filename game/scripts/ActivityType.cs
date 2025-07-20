@@ -5,6 +5,6 @@ public enum ActivityType
     Home,
     Bar,
     Slots,
-    Poker,
+    Blackjack,
     Roulette,
 }

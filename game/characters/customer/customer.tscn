@@ -25,11 +25,10 @@ shape = SubResource("CircleShape2D_01pos")
 
 [node name="NavigationAgent" type="NavigationAgent2D" parent="."]
 unique_name_in_owner = true
-path_desired_distance = 1.5
+path_desired_distance = 15.0
 target_desired_distance = 20.0
 path_postprocessing = 1
 avoidance_enabled = true
-debug_enabled = true
 
 [node name="Name" type="Label" parent="."]
 unique_name_in_owner = true
@@ -47,7 +46,18 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 12
 text = "Name"
 
+[node name="Transactions" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_top = -45.0
+offset_bottom = -45.0
+grow_horizontal = 2
+
 [node name="PlayerInteractable" parent="." instance=ExtResource("3_v6hme")]
+unique_name_in_owner = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerInteractable"]
 shape = SubResource("CircleShape2D_xa0h2")

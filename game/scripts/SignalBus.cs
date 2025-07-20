@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using ProjectGJ.Characters.Customer;
+using ProjectGJ.Props.Blackjack;
+using ProjectGJ.Props.Roulette;
 using ProjectGJ.Props.Slots;
 using ProjectGJ.Scripts.Items;
 
@@ -53,4 +56,12 @@ public static class SignalBus
     public static void BroadcastRefreshShops() => RefreshShops?.Invoke();
     public static Action<Slots>? PlayerRepairingSlots;
     public static void BroadcastPlayerRepairingSlots(Slots slots) => PlayerRepairingSlots?.Invoke(slots);
+    public static Action<Slots, Customer>? CustomerGamblingSlots;
+    public static void BroadcastCustomerGamblingSlots(Slots slots, Customer customer) => CustomerGamblingSlots?.Invoke(slots, customer);
+    public static Action<Customer>? CustomerDrinking;
+    public static void BroadcastCustomerDrinking(Customer customer) => CustomerDrinking?.Invoke(customer);
+    public static Action<Customer>? CustomerGamblingRoulette;
+    public static void BroadcastCustomerGamblingRoulette(Customer customer) => CustomerGamblingRoulette?.Invoke(customer);
+    public static Action<Customer>? CustomerGamblingBlackjack;
+    public static void BroadcastCustomerGamblingBlackjack(Customer customer) => CustomerGamblingBlackjack?.Invoke(customer);
 }

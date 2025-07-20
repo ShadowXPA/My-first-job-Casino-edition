@@ -16,7 +16,7 @@ public partial class WorkerStation : StaticBody2D
 
     public override void _Ready()
     {
-		WorkerSpawner = GetNode<Node2D>("%WorkerSpawner");
+        WorkerSpawner = GetNode<Node2D>("%WorkerSpawner");
         CustomerSeats = GetNode<Node2D>("%CustomerSeats");
     }
 
@@ -33,7 +33,7 @@ public partial class WorkerStation : StaticBody2D
             }
     }
 
-    public Node2D? TryOccupyTable(Customer customer)
+    public virtual Node2D? TryOccupyTable(Customer customer)
     {
         if (CustomerSeats is null || Customers.ContainsKey(customer) || !HasEmptySeats || Worker is null) return null;
 
@@ -48,7 +48,7 @@ public partial class WorkerStation : StaticBody2D
         return seat;
     }
 
-    public void LeaveTable(Customer customer)
+    public virtual void LeaveTable(Customer customer)
     {
         if (CustomerSeats is null || !Customers.TryGetValue(customer, out Node2D? seat)) return;
 

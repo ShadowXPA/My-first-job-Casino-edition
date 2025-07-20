@@ -330,7 +330,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nafwu"]
-size = Vector2(16, 16)
+size = Vector2(12, 12)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_swsnf"]
 radius = 24.0
@@ -342,10 +342,12 @@ script = ExtResource("1_ienl1")
 unique_name_in_owner = true
 position = Vector2(1.5, -14)
 sprite_frames = SubResource("SpriteFrames_mwhlb")
-animation = &"on"
+animation = &"lose"
 autoplay = "on"
+frame_progress = 0.159522
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
 shape = SubResource("RectangleShape2D_nafwu")
 
 [node name="PlayerInteractable" parent="." instance=ExtResource("3_nafwu")]

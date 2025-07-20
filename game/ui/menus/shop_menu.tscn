@@ -31,10 +31,11 @@ text = "x"
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 0
+current_tab = 1
 use_hidden_tabs_for_min_size = true
 
 [node name="Casino Games" type="ScrollContainer" parent="TabContainer"]
+visible = false
 layout_mode = 2
 horizontal_scroll_mode = 4
 vertical_scroll_mode = 0
@@ -45,13 +46,26 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Hire" type="ScrollContainer" parent="TabContainer"]
-visible = false
 layout_mode = 2
 horizontal_scroll_mode = 4
 vertical_scroll_mode = 0
 metadata/_tab_index = 1
 
-[node name="HireList" type="HBoxContainer" parent="TabContainer/Hire"]
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Hire"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Hire/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Hire/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "The shop refreshes every 3 hours (in-game time)"
+
+[node name="HireList" type="HBoxContainer" parent="TabContainer/Hire/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 

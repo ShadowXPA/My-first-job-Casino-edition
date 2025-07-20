@@ -23,6 +23,8 @@ public static class Constants
     public readonly static int MIN_ACTIVITY_TIME = 30;
     public readonly static float MIN_GAMBLE_TIME = 1.0f;
     public readonly static float MAX_GAMBLE_TIME = 3.0f;
+    public readonly static int MIN_MONEY_WON_OR_LOST = 25;
+    public readonly static int MAX_MONEY_WON_OR_LOST = 250;
 
     public static class CustomerBonusWinRate
     {

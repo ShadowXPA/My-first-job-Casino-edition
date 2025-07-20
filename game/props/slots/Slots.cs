@@ -17,6 +17,7 @@ public partial class Slots : StaticBody2D
     private Timer _timer = new();
     private bool _on;
     private bool _gambling;
+    private bool _canGamble => _on && Customer is not null && !_gambling;
 
     public override void _Ready()
     {
@@ -29,21 +30,27 @@ public partial class Slots : StaticBody2D
         PowerOn();
         AddChild(_timer);
         _animationSprite.AnimationFinished += OnAnimationFinished;
-        _timer.Timeout += OnPlayerGambled;
+        _timer.OneShot = true;
+        _timer.Timeout += OnTimerTimeout;
     }
 
     public override void _ExitTree()
     {
         if (_animationSprite is not null)
             _animationSprite.AnimationFinished -= OnAnimationFinished;
-        _timer.Timeout -= OnPlayerGambled;
+        _timer.Timeout -= OnTimerTimeout;
     }
 
     public void Occupy(Characters.Customer.Customer? customer)
     {
-        if (!_on) return;
+        if (customer is not null && !_on) return;
 
         Customer = customer;
+
+        if (_on && customer is null)
+        {
+            PlayAnimation("on");
+        }
     }
 
     public void Break()
@@ -60,10 +67,32 @@ public partial class Slots : StaticBody2D
 
     public void Gamble()
     {
-        if (!_on || Customer is null || _gambling) return;
+        if (!_canGamble) return;
 
         _gambling = true;
-        _animationSprite?.Play("pulling");
+        PlayAnimation("pulling");
+    }
+
+    public void Win()
+    {
+        PlayAnimation("win");
+        Cooldown();
+    }
+
+    public void Lose()
+    {
+        PlayAnimation("lose");
+        Cooldown();
+    }
+
+    public void PlayAnimation(string animation)
+    {
+        _animationSprite?.Play(animation);
+    }
+
+    private void Cooldown()
+    {
+        _timer.Start(2);
     }
 
     private void PowerOn()
@@ -71,7 +100,7 @@ public partial class Slots : StaticBody2D
         if (_repairButton is null || _animationSprite is null) return;
 
         _repairButton.Visible = false;
-        _animationSprite.Play("on");
+        PlayAnimation("on");
         _on = true;
     }
 
@@ -80,7 +109,7 @@ public partial class Slots : StaticBody2D
         if (_repairButton is null || _animationSprite is null) return;
 
         _repairButton.Visible = true;
-        _animationSprite.Play("off");
+        PlayAnimation("off");
         _on = false;
     }
 
@@ -95,16 +124,27 @@ public partial class Slots : StaticBody2D
 
         if (_animationSprite.Animation == "pulling")
         {
-            _timer.WaitTime = GD.RandRange(Constants.MIN_GAMBLE_TIME, Constants.MAX_GAMBLE_TIME);
-            _timer.Start();
-            _animationSprite.Play("rolling");
+            _timer.Start(GD.RandRange(Constants.MIN_GAMBLE_TIME, Constants.MAX_GAMBLE_TIME));
+            PlayAnimation("rolling");
         }
     }
 
-    private void OnPlayerGambled()
+    private void OnTimerTimeout()
     {
-        // TODO: signal that customer gambled, GameManager decides if customer won or lost (also apply bonuses), then play animation, 1 sec later is available for gamble
-        _animationSprite?.Play("win");
-        // SignalBus.BroadcastCustomerGambled(Customer);
+        if (_animationSprite is null || Customer is null) return;
+
+        if (_animationSprite.Animation == "rolling")
+        {
+            SignalBus.BroadcastCustomerGamblingSlots(this, Customer);
+            return;
+        }
+
+        if (_animationSprite.Animation == "win" || _animationSprite.Animation == "lose")
+        {
+            PlayAnimation("on");
+            _gambling = false;
+            Gamble();
+            return;
+        }
     }
 }

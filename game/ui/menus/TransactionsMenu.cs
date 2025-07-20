@@ -2,6 +2,7 @@ using Godot;
 using ProjectGJ.Scripts;
 using ProjectGJ.Ui.Transactions;
 using System;
+using System.Threading.Tasks;
 
 namespace ProjectGJ.Ui.Menus;
 
@@ -10,11 +11,13 @@ public partial class TransactionsMenu : PanelContainer
 	[Export]
 	public PackedScene? TransactionItem;
 
+	private ScrollContainer? _scrollContainer;
 	private VBoxContainer? _transactionsList;
 	private Button? _exitButton;
 
 	public override void _Ready()
 	{
+		_scrollContainer = GetNode<ScrollContainer>("%ScrollContainer");
 		_transactionsList = GetNode<VBoxContainer>("%Transactions");
 		_exitButton = GetNode<Button>("%Exit");
 		_exitButton.Pressed += () => OnTransactionsButtonPressed(false);
@@ -36,7 +39,7 @@ public partial class TransactionsMenu : PanelContainer
 
 	private void OnTransactionComplete(Transaction transaction)
 	{
-		if (TransactionItem is null || _transactionsList is null) return;
+		if (TransactionItem is null || _transactionsList is null || _scrollContainer is null) return;
 
 		var transactionItem = TransactionItem.Instantiate<TransactionItem>();
 		_transactionsList.AddChild(transactionItem);

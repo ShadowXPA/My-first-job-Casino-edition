@@ -20,7 +20,6 @@ public partial class PlayerInteractable : Area2D
 
     public override void _ExitTree()
     {
-		SignalBus.BroadcastPlayerStoppedInteracting(Actions);
         BodyEntered -= OnPlayerEntered;
         BodyExited -= OnPlayerExited;
     }
