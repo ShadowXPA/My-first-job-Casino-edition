@@ -63,7 +63,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="TabContainer/Hire/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "The shop refreshes every 3 hours (in-game time)"
+text = "The shop refreshes every 12 hours (in-game time)"
 
 [node name="HireList" type="HBoxContainer" parent="TabContainer/Hire/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

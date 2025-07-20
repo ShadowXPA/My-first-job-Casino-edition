@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cl2nm2chxlnaa"]
+[gd_scene load_steps=13 format=3 uid="uid://cl2nm2chxlnaa"]
 
 [ext_resource type="PackedScene" uid="uid://cegnb4ag1qcju" path="res://ui/hud/hud.tscn" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bs4ywh4n5wkaq" path="res://levels/casino/casino.tscn" id="1_uwrxv"]
@@ -8,8 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://dgpyalf0v1fty" path="res://ui/menus/statue_menu.tscn" id="3_p57ef"]
 [ext_resource type="PackedScene" uid="uid://ydl8fmcvj27v" path="res://ui/menus/inventory_menu.tscn" id="4_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://i7wrnnhsqoff" path="res://ui/menus/transactions_menu.tscn" id="5_gee14"]
+[ext_resource type="PackedScene" uid="uid://dv1c58immvsjq" path="res://ui/menus/game_menu.tscn" id="6_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://bv5wyrvh7fafm" path="res://characters/worker/worker.tscn" id="9_vtaks"]
 [ext_resource type="PackedScene" uid="uid://bkou10qbo1vtu" path="res://characters/customer/customer.tscn" id="10_kvpfn"]
+[ext_resource type="AudioStream" uid="uid://cjtrn8qsvj5fs" path="res://assets/audio/music/Interior Birdecorator Decorate.ogg" id="12_dinhu"]
 
 [node name="Game" type="Node2D"]
 
@@ -29,6 +31,9 @@ visible = false
 [node name="TransactionsMenu" parent="UIElements" instance=ExtResource("5_gee14")]
 visible = false
 
+[node name="GameMenu" parent="UIElements" instance=ExtResource("6_kvpfn")]
+visible = false
+
 [node name="Casino" parent="." instance=ExtResource("1_uwrxv")]
 
 [node name="Player" parent="." instance=ExtResource("2_yqjtg")]
@@ -42,7 +47,7 @@ zoom = Vector2(2.5, 2.5)
 [node name="Workers" type="Node" parent="."]
 
 [node name="GameTimer" type="Timer" parent="."]
-wait_time = 0.25
+wait_time = 0.05
 autostart = true
 
 [node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("GameTimer", "Player", "CustomerContainer", "WorkerContainer", "Hud")]
@@ -54,3 +59,8 @@ WorkerContainer = NodePath("../Workers")
 Hud = NodePath("../UIElements/HUD")
 WorkerScene = ExtResource("9_vtaks")
 CustomerScene = ExtResource("10_kvpfn")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_dinhu")
+autoplay = true
+bus = &"Music"

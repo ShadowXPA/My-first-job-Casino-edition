@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://dv1c58immvsjq"]
+
+[ext_resource type="Script" uid="uid://byy5yay2t18jx" path="res://ui/menus/GameMenu.cs" id="1_gljo2"]
+
+[node name="GameMenu" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gljo2")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="MainMenu" type="Button" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Main menu"
+
+[node name="Quit" type="Button" parent="CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit"

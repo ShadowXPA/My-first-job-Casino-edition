@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://bwhwysn1hny2r"]
+
+[ext_resource type="PackedScene" uid="uid://bbg6bsukwtign" path="res://ui/menus/main_menu.tscn" id="1_l6cm7"]
+[ext_resource type="PackedScene" uid="uid://ca34s2rn0khcm" path="res://ui/menus/tutorial_menu.tscn" id="2_bqqt6"]
+[ext_resource type="PackedScene" uid="uid://dgsm6agpgbne4" path="res://ui/menus/credits_menu.tscn" id="2_ekxnf"]
+[ext_resource type="AudioStream" uid="uid://wvmehnxjnko6" path="res://assets/audio/music/Interior Birdecorator Explore.ogg" id="4_wu84c"]
+
+[node name="MainMenu" type="Node2D"]
+
+[node name="UI" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="MainMenu" parent="UI" node_paths=PackedStringArray("Tutorial", "Credits") instance=ExtResource("1_l6cm7")]
+Tutorial = NodePath("../TutorialMenu")
+Credits = NodePath("../CreditsMenu")
+
+[node name="TutorialMenu" parent="UI" instance=ExtResource("2_bqqt6")]
+visible = false
+
+[node name="CreditsMenu" parent="UI" instance=ExtResource("2_ekxnf")]
+visible = false
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_wu84c")
+autoplay = true
+bus = &"Music"

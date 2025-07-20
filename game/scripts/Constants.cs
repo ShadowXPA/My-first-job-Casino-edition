@@ -20,7 +20,7 @@ public static class Constants
     public readonly static float SECURITY_MULTIPLIER = 1.0f - 0.02f;
     public readonly static float CUSTOMER_BASE_WIN_RATE = 0.25f;
     public readonly static int MAX_NUMBER_CUSTOMERS = 10;
-    public readonly static int MIN_ACTIVITY_TIME = 30;
+    public readonly static int MIN_ACTIVITY_TIME = 60 * 3;
     public readonly static float MIN_GAMBLE_TIME = 1.0f;
     public readonly static float MAX_GAMBLE_TIME = 3.0f;
     public readonly static int MIN_MONEY_WON_OR_LOST = 25;
@@ -38,11 +38,11 @@ public static class Constants
 
     public static class CustomerAverageTime
     {
-        public readonly static int MIN_NORMAL = 3 * 60;
-        public readonly static int MAX_NORMAL = 4 * 60;
-        public readonly static int MIN_CHEATER = 1 * 60;
-        public readonly static int MAX_CHEATER = 3 * 60;
-        public readonly static int MIN_ADDICT = 4 * 60;
-        public readonly static int MAX_ADDICT = 8 * 60;
+        public readonly static int MIN_NORMAL = 3 * 3 * 60;
+        public readonly static int MAX_NORMAL = 3 * 4 * 60;
+        public readonly static int MIN_CHEATER = 3 * 1 * 60;
+        public readonly static int MAX_CHEATER = 3 * 3 * 60;
+        public readonly static int MIN_ADDICT = 3 * 4 * 60;
+        public readonly static int MAX_ADDICT = 3 * 8 * 60;
     }
 }

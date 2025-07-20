@@ -108,7 +108,7 @@ public partial class GameManager : Node
             brokenSlots.Break();
         }
 
-        if (minutes % 5 == 0)
+        if (minutes % 15 == 0)
         {
             if (CustomerScene is not null && CustomerContainer is not null && CustomerContainer.GetChildCount() < Constants.MAX_NUMBER_CUSTOMERS)
             {
@@ -138,7 +138,7 @@ public partial class GameManager : Node
 
         if (minutes % 60 == 0)
         {
-            if (hour % 3 == 0)
+            if (hour % 12 == 0)
             {
                 SignalBus.BroadcastRefreshShops();
             }

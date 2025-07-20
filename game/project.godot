@@ -10,16 +10,23 @@ config_version=5
 
 [application]
 
-config/name="Project GJ"
+config/name="My first job - Casino edition"
 config/description="Game for the Shovel Jam 2025 Game Jam"
 config/version="1.0.0-demo"
-run/main_scene="uid://cl2nm2chxlnaa"
+run/main_scene="uid://bwhwysn1hny2r"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+SceneManager="*res://scripts/SceneManager.cs"
+
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/mode=4
 window/handheld/orientation=4
 mouse_cursor/custom_image="uid://bb8c3mfb5kvw"
 
