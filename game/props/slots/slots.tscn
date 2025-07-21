@@ -1,7 +1,7 @@
 [gd_scene load_steps=48 format=3 uid="uid://bbdvu825g3gpy"]
 
 [ext_resource type="Script" uid="uid://b8wep0bi3obck" path="res://props/slots/Slots.cs" id="1_ienl1"]
-[ext_resource type="Texture2D" uid="uid://betp0xm6k2fx" path="res://assets/sprites/casino/SlotMachinesAnimationSheet_0.png" id="2_nafwu"]
+[ext_resource type="Texture2D" uid="uid://conoyxuliep8q" path="res://assets/sprites/casino/SlotMachinesAnimationSheet_0.png" id="2_nafwu"]
 [ext_resource type="PackedScene" uid="uid://dvh3gq7uu2epb" path="res://components/interactable/player_interactable.tscn" id="3_nafwu"]
 [ext_resource type="AudioStream" uid="uid://cwp4i7614trn1" path="res://assets/audio/sfx/card-fan-1.ogg" id="4_n5h6l"]
 
@@ -345,7 +345,6 @@ position = Vector2(1.5, -14)
 sprite_frames = SubResource("SpriteFrames_mwhlb")
 animation = &"lose"
 autoplay = "on"
-frame_progress = 0.159522
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -2)

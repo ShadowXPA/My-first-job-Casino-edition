@@ -1,8 +1,6 @@
 using Godot;
 using ProjectGJ.Scripts;
 using ProjectGJ.Ui.Transactions;
-using System;
-using System.Threading.Tasks;
 
 namespace ProjectGJ.Ui.Menus;
 

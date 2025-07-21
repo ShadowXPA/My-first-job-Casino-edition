@@ -1,6 +1,5 @@
 using Godot;
 using ProjectGJ.Scripts;
-using System;
 
 namespace ProjectGJ.Ui.Transactions;
 

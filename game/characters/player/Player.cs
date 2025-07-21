@@ -1,7 +1,6 @@
+using System.Text;
 using Godot;
 using ProjectGJ.Scripts;
-using System;
-using System.Text;
 
 namespace ProjectGJ.Characters.Player;
 

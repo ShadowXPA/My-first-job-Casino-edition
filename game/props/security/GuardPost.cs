@@ -1,6 +1,5 @@
 using Godot;
 using ProjectGJ.Characters.Worker;
-using System;
 
 namespace ProjectGJ.Props.Security;
 

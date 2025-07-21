@@ -1,7 +1,6 @@
+using System.Collections.Generic;
 using Godot;
 using ProjectGJ.Scripts;
-using System;
-using System.Collections.Generic;
 
 namespace ProjectGJ.Ui.Hud;
 

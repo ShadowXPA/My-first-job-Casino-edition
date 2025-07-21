@@ -1,12 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
-using Godot.NativeInterop;
-using ProjectGJ.Characters.Worker;
 using ProjectGJ.Scripts;
 using ProjectGJ.Scripts.Items;
 using ProjectGJ.Ui.Shop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ProjectGJ.Ui.Menus;
 

@@ -1,8 +1,7 @@
-using Godot;
-using ProjectGJ.Scripts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
+using ProjectGJ.Scripts;
 
 namespace ProjectGJ.Ui.Menus;
 

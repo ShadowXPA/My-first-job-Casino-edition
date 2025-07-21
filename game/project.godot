@@ -16,7 +16,8 @@ config/version="1.0.0-demo"
 run/main_scene="uid://bwhwysn1hny2r"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://dd35f1fangbnq"
+config/windows_native_icon="res://slot_machine.ico"
 
 [autoload]
 

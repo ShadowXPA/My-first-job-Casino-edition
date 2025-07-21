@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using ProjectGJ.Characters.Customer;
-using ProjectGJ.Props.Blackjack;
-using ProjectGJ.Props.Roulette;
 using ProjectGJ.Props.Slots;
 using ProjectGJ.Scripts.Items;
 

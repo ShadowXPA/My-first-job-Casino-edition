@@ -1,8 +1,6 @@
 using Godot;
-using ProjectGJ.Characters.Customer;
 using ProjectGJ.Components.Interactable;
 using ProjectGJ.Scripts;
-using System;
 
 namespace ProjectGJ.Props.Slots;
 

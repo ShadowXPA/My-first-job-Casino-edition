@@ -1,6 +1,5 @@
 using Godot;
 using ProjectGJ.Scripts.Items;
-using System;
 
 namespace ProjectGJ.Ui.Shop;
 

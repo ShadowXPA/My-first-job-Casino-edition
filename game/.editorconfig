@@ -2,3 +2,7 @@ root = true
 
 [*]
 charset = utf-8
+
+[*.cs]
+dotnet_sort_system_directives_first = true
+csharp_style_namespace_declarations = file_scoped:suggestion

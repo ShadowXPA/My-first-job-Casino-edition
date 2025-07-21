@@ -1,6 +1,4 @@
-using Godot;
 using ProjectGJ.Scripts.Items;
-using System;
 using System.Collections.Generic;
 
 namespace ProjectGJ.Scripts;

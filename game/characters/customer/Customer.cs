@@ -1,3 +1,4 @@
+using System.Text;
 using Godot;
 using ProjectGJ.Components.Interactable;
 using ProjectGJ.Props.Bar;
@@ -7,9 +8,6 @@ using ProjectGJ.Props.Roulette;
 using ProjectGJ.Props.Slots;
 using ProjectGJ.Scripts;
 using ProjectGJ.Scripts.Items;
-using System;
-using System.Linq;
-using System.Text;
 
 namespace ProjectGJ.Characters.Customer;
 
