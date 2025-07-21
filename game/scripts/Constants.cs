@@ -4,8 +4,9 @@ public static class Constants
 {
     public readonly static string CHARACTER_RESOURCE_BASE_PATH = "res://characters/resource";
     public readonly static string ASSET_SPRITE_CASINO_BASE_PATH = "res://assets/sprites/casino";
+    public readonly static string DEFAULT_CHARACTER_RESOURCE = "character_0.res";
 
-    public readonly static int MIN_SALARY = 1000;
+    public readonly static int MIN_SALARY = 4000;
     public readonly static int MAX_SALARY = 10000;
     public readonly static float SELL_PERCENTAGE = 0.75f;
     public readonly static float TAX_RATE = 0.15f;
@@ -19,7 +20,7 @@ public static class Constants
     public readonly static float RANDOM_ADDICT_RATE = 0.3f;
     public readonly static float SECURITY_MULTIPLIER = 1.0f - 0.02f;
     public readonly static float CUSTOMER_BASE_WIN_RATE = 0.25f;
-    public readonly static int MAX_NUMBER_CUSTOMERS = 10;
+    public readonly static int MAX_NUMBER_CUSTOMERS = 50;
     public readonly static int MIN_ACTIVITY_TIME = 60 * 3;
     public readonly static float MIN_GAMBLE_TIME = 1.0f;
     public readonly static float MAX_GAMBLE_TIME = 3.0f;
@@ -30,8 +31,8 @@ public static class Constants
     {
         public readonly static float MIN_NORMAL = -0.05f;
         public readonly static float MAX_NORMAL = 0.15f;
-        public readonly static float MIN_CHEATER = 0.05f;
-        public readonly static float MAX_CHEATER = 0.25f;
+        public readonly static float MIN_CHEATER = 0.1f;
+        public readonly static float MAX_CHEATER = 0.35f;
         public readonly static float MIN_ADDICT = -0.1f;
         public readonly static float MAX_ADDICT = 0.1f;
     }

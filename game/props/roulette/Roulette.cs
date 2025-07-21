@@ -8,12 +8,14 @@ public partial class Roulette : WorkerStation
 {
 	private AnimatedSprite2D? _animatedSprite;
 	private List<Characters.Customer.Customer> _customersPlaying = [];
+	private AudioStreamPlayer2D? _audioStreamPlayer;
 	private bool _rolling;
 
 	public override void _Ready()
 	{
 		base._Ready();
 		_animatedSprite = GetNode<AnimatedSprite2D>("%RouletteWheel");
+        _audioStreamPlayer = GetNode<AudioStreamPlayer2D>("%AudioStreamPlayer2D");
 		SignalBus.GameTimeChanged += OnTimeChanged;
 	}
 
@@ -45,7 +47,7 @@ public partial class Roulette : WorkerStation
 	{
 		if (Worker is null || _customersPlaying.Count == 0) return;
 
-		if (time % 5 == 0)
+		if (time % 30 == 0)
 		{
 			if (_rolling)
 			{
@@ -65,6 +67,7 @@ public partial class Roulette : WorkerStation
 
 		_rolling = true;
 		_animatedSprite.Play("rolling");
+		_audioStreamPlayer?.Play();
 	}
 
 	private void StopWheel()
@@ -73,5 +76,6 @@ public partial class Roulette : WorkerStation
 
 		_rolling = false;
 		_animatedSprite.Play("default");
+		_audioStreamPlayer?.Stop();
 	}
 }

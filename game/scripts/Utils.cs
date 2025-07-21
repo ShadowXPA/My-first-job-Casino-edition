@@ -166,4 +166,9 @@ public static class Utils
             Resource = resource,
         };
     }
+
+    public static Texture2D LoadFrameTexture(string character)
+    {
+        return GD.Load<SpriteFrames>($"{Constants.CHARACTER_RESOURCE_BASE_PATH}/{character}").GetFrameTexture("idle_down", 0);
+    }
 }

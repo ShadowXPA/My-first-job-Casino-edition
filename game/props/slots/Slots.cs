@@ -13,6 +13,7 @@ public partial class Slots : StaticBody2D
 
     private AnimatedSprite2D? _animationSprite;
     private PlayerInteractable? _playerInteractable;
+    private AudioStreamPlayer2D? _audioStreamPlayer;
     private Button? _repairButton;
     private Timer _timer = new();
     private bool _on;
@@ -23,6 +24,7 @@ public partial class Slots : StaticBody2D
     {
         _animationSprite = GetNode<AnimatedSprite2D>("%Sprite");
         _playerInteractable = GetNode<PlayerInteractable>("%PlayerInteractable");
+        _audioStreamPlayer = GetNode<AudioStreamPlayer2D>("%AudioStreamPlayer2D");
 
         _repairButton = Utils.CreateActionButton($"Repair (-${Constants.SLOT_MACHINE_REPAIR_FEE})", OnRepairPressed);
         _playerInteractable.Actions.Add(_repairButton);
@@ -50,6 +52,7 @@ public partial class Slots : StaticBody2D
         if (_on && customer is null)
         {
             PlayAnimation("on");
+            _audioStreamPlayer?.Stop();
         }
     }
 
@@ -71,6 +74,7 @@ public partial class Slots : StaticBody2D
 
         _gambling = true;
         PlayAnimation("pulling");
+        _audioStreamPlayer?.Play();
     }
 
     public void Win()
@@ -92,6 +96,7 @@ public partial class Slots : StaticBody2D
 
     private void Cooldown()
     {
+        _audioStreamPlayer?.Stop();
         _timer.Start(2);
     }
 
@@ -110,6 +115,7 @@ public partial class Slots : StaticBody2D
 
         _repairButton.Visible = true;
         PlayAnimation("off");
+        _audioStreamPlayer?.Stop();
         _on = false;
     }
 

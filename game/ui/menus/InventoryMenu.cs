@@ -72,7 +72,7 @@ public partial class InventoryMenu : PanelContainer
 
 		var shopItem = ShopItem.Instantiate<ShopItem>();
 		_workersList?.AddChild(shopItem);
-		var button = Utils.CreateActionButton($"Fire (-${Mathf.FloorToInt(worker.FinalPrice / 30 * (worker.DaysWorked % 30))})", () => FireWorker(worker, shopItem), HorizontalAlignment.Center);
+		var button = Utils.CreateActionButton($"Fire (-${Mathf.FloorToInt(worker.FinalPrice / 30 * Mathf.Min(Mathf.Max(worker.DaysWorked % 30, 1), 30))})", () => FireWorker(worker, shopItem), HorizontalAlignment.Center);
 		shopItem.SetItem(worker, button);
 	}
 
@@ -102,7 +102,7 @@ public partial class InventoryMenu : PanelContainer
 			{
 				var worker = (WorkerItem)workerItem.GetItem()!;
 				var button = workerItem.Actions.GetChild<Button>(0);
-				button.Text = $"Fire (-${Mathf.FloorToInt(worker.FinalPrice / 30 * (worker.DaysWorked % 30))})";
+				button.Text = $"Fire (-${Mathf.FloorToInt(worker.FinalPrice / 30 * Mathf.Min(Mathf.Max(worker.DaysWorked % 30, 1), 30))})";
 			}
 		}
 	}

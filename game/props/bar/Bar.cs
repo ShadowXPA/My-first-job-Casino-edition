@@ -22,7 +22,7 @@ public partial class Bar : WorkerStation
 
     public void Drink(Characters.Customer.Customer customer)
     {
-        _customersDrinking.Add(customer, GD.RandRange(5, 10));
+        _customersDrinking.Add(customer, GD.RandRange(30, 60));
     }
 
     public override void LeaveTable(Characters.Customer.Customer customer)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cl2nm2chxlnaa"]
+[gd_scene load_steps=15 format=3 uid="uid://cl2nm2chxlnaa"]
 
 [ext_resource type="PackedScene" uid="uid://cegnb4ag1qcju" path="res://ui/hud/hud.tscn" id="1_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bs4ywh4n5wkaq" path="res://levels/casino/casino.tscn" id="1_uwrxv"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://ydl8fmcvj27v" path="res://ui/menus/inventory_menu.tscn" id="4_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://i7wrnnhsqoff" path="res://ui/menus/transactions_menu.tscn" id="5_gee14"]
 [ext_resource type="PackedScene" uid="uid://dv1c58immvsjq" path="res://ui/menus/game_menu.tscn" id="6_kvpfn"]
+[ext_resource type="PackedScene" uid="uid://ca34s2rn0khcm" path="res://ui/menus/tutorial_menu.tscn" id="7_trtic"]
+[ext_resource type="PackedScene" uid="uid://dgsm6agpgbne4" path="res://ui/menus/credits_menu.tscn" id="8_ir15t"]
 [ext_resource type="PackedScene" uid="uid://bv5wyrvh7fafm" path="res://characters/worker/worker.tscn" id="9_vtaks"]
 [ext_resource type="PackedScene" uid="uid://bkou10qbo1vtu" path="res://characters/customer/customer.tscn" id="10_kvpfn"]
 [ext_resource type="AudioStream" uid="uid://cjtrn8qsvj5fs" path="res://assets/audio/music/Interior Birdecorator Decorate.ogg" id="12_dinhu"]
@@ -31,7 +33,15 @@ visible = false
 [node name="TransactionsMenu" parent="UIElements" instance=ExtResource("5_gee14")]
 visible = false
 
-[node name="GameMenu" parent="UIElements" instance=ExtResource("6_kvpfn")]
+[node name="GameMenu" parent="UIElements" node_paths=PackedStringArray("Tutorial", "Credits") instance=ExtResource("6_kvpfn")]
+visible = false
+Tutorial = NodePath("../TutorialMenu")
+Credits = NodePath("../CreditsMenu")
+
+[node name="TutorialMenu" parent="UIElements" instance=ExtResource("7_trtic")]
+visible = false
+
+[node name="CreditsMenu" parent="UIElements" instance=ExtResource("8_ir15t")]
 visible = false
 
 [node name="Casino" parent="." instance=ExtResource("1_uwrxv")]

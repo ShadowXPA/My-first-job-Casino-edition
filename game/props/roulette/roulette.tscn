@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://bthkedaeavgva"]
+[gd_scene load_steps=19 format=3 uid="uid://bthkedaeavgva"]
 
 [ext_resource type="Script" uid="uid://ijcpiadxbkxa" path="res://props/roulette/Roulette.cs" id="1_fkqp3"]
 [ext_resource type="Texture2D" uid="uid://bo6uj2sgm0wee" path="res://assets/sprites/casino/roulette.png" id="1_rw2qc"]
 [ext_resource type="Texture2D" uid="uid://d24ovru5vitva" path="res://assets/sprites/casino/roulette_wheel.png" id="2_f1cr1"]
+[ext_resource type="AudioStream" uid="uid://ct8ou10wlvip4" path="res://assets/audio/sfx/dice-shake-3.ogg" id="4_tx0tj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fkqp3"]
 atlas = ExtResource("2_f1cr1")
@@ -146,3 +147,9 @@ position = Vector2(-8, 26)
 
 [node name="Seat5" type="Node2D" parent="CustomerSeats"]
 position = Vector2(23, 26)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("4_tx0tj")
+max_distance = 400.0
+bus = &"SFX"

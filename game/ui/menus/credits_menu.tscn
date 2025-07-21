@@ -59,20 +59,21 @@ text = "This was my first \"real\" game, and my first game jam ([url=\"https://i
 
 Assets used:
 
-Font: [url=\"https://fonts.google.com/specimen/Jersey+15\"]Jersey 15 (Google Fonts)[/url]
+Font:
+[url=\"https://fonts.google.com/specimen/Jersey+15\"]Jersey 15 (Google Fonts)[/url]
 
 Art:
 [url=\"https://gamebetweenthelines.itch.io/2d-top-down-pixel-art-tileset-casino\"]2D Top-Down Pixel Art Tileset: Casino[/url] by Jephed, Game Between The Lines, [url=\"https://gamebetweenthelines.com/\"]https://gamebetweenthelines.com/[/url]
 [url=\"https://gamebetweenthelines.itch.io/top-down-pixel-art-characters\"]2D Top-Down Pixel Art Characters[/url] by Jephed, Game Between The Lines, [url=\"https://gamebetweenthelines.com/\"]https://gamebetweenthelines.com/[/url]
 
-Cursor: [url=\"https://www.kenney.nl/assets/ui-pack-sci-fi\"]UI Pack - Sci-Fi (Kenney)[/url]
+Cursor:
+[url=\"https://www.kenney.nl/assets/ui-pack-sci-fi\"]UI Pack - Sci-Fi (Kenney)[/url]
 
 Music:
-Interior Birdecorator Decorate from [url=\"https://tallbeard.itch.io/music-loop-bundle\"][Music Assets] FREE Music Loop Bundle by Tallbeard Studios[/url]
-Interior Birdecorator Explore from [url=\"https://tallbeard.itch.io/music-loop-bundle\"][Music Assets] FREE Music Loop Bundle by Tallbeard Studios[/url]
+[url=\"https://tallbeard.itch.io/music-loop-bundle\"]Interior Birdecorator Decorate[/url] and [url=\"https://tallbeard.itch.io/music-loop-bundle\"]Interior Birdecorator Explore[/url] by Tallbeard Studios
 
 Sound effects:
-"
+[url=\"https://www.kenney.nl/assets/casino-audio\"]Casino Audio (Kenney)[/url]"
 fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1

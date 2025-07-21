@@ -55,7 +55,9 @@ public partial class GameManager : Node
         SignalBus.CustomerGamblingBlackjack += OnCustomerGambling;
         SignalBus.CustomerDrinking += OnCustomerDrinking;
 
-        Player?.SetCharacterResource(_gameData.CharacterResource);
+        var sceneManager = SceneManager.Instance!;
+
+        Player?.SetCharacterResource(sceneManager.Character is null ? _gameData.CharacterResource : $"{Constants.CHARACTER_RESOURCE_BASE_PATH}/{sceneManager.Character}");
     }
 
     public override void _ExitTree()
@@ -356,7 +358,7 @@ public partial class GameManager : Node
 
     private void OnPlayerFiredWorker(WorkerItem worker)
     {
-        var sellValue = -Mathf.FloorToInt(worker.FinalPrice / 30 * (worker.DaysWorked % 30));
+        var sellValue = -Mathf.FloorToInt(worker.FinalPrice / 30 * Mathf.Min(Mathf.Max(worker.DaysWorked % 30, 1), 30));
 
         switch (worker.Profession)
         {

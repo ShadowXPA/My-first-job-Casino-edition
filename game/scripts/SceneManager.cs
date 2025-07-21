@@ -7,6 +7,8 @@ public partial class SceneManager : Node
 {
     public static SceneManager? Instance { get; private set; }
 
+    public string? Character;
+
     public override void _Ready()
     {
         Instance = this;
