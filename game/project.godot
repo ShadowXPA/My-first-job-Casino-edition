@@ -11,13 +11,15 @@ config_version=5
 [application]
 
 config/name="My first job - Casino edition"
-config/description="Game for the Shovel Jam 2025 Game Jam"
-config/version="1.0.0-demo"
+config/description="Game for the Shovel Jam 2025 game jam"
+config/version="1.0.0.0"
 run/main_scene="uid://bwhwysn1hny2r"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
+boot_splash/fullsize=false
+boot_splash/image="uid://dd35f1fangbnq"
 config/icon="uid://dd35f1fangbnq"
-config/windows_native_icon="res://slot_machine.ico"
+config/windows_native_icon="res://icon.ico"
 
 [autoload]
 

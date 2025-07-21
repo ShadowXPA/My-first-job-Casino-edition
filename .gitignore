@@ -430,3 +430,5 @@ mono_crash.*.json
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/godot,csharp,visualstudiocode
+
+.out

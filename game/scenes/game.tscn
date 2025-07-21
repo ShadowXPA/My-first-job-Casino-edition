@@ -62,13 +62,13 @@ autostart = true
 
 [node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("GameTimer", "Player", "CustomerContainer", "WorkerContainer", "Hud")]
 script = ExtResource("3_lnu2h")
+WorkerScene = ExtResource("9_vtaks")
+CustomerScene = ExtResource("10_kvpfn")
 GameTimer = NodePath("../GameTimer")
 Player = NodePath("../Player")
 CustomerContainer = NodePath("../Customers")
 WorkerContainer = NodePath("../Workers")
 Hud = NodePath("../UIElements/HUD")
-WorkerScene = ExtResource("9_vtaks")
-CustomerScene = ExtResource("10_kvpfn")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_dinhu")
